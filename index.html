@@ -375,70 +375,130 @@ const calcPts = (p, r) => {
 // ════════════════════════════════════════════════════════════════════════════
 // COPA 2026 DATA
 // ════════════════════════════════════════════════════════════════════════════
+// Grupos oficiais FIFA - sorteio dezembro 2024
+// Grupo A: 4ª seleção = Rep. Tcheca (venceu playoff europeu)
+// Grupo B: 4ª seleção = Bósnia (venceu playoff europeu)
+// Grupo D: 4ª seleção = Rep. Tcheca/Turquia/Kosovo/Romênia (playoff) - usando "Europa C"
+// Grupo F: 4ª seleção = playoff europeu - usando "Europa B"
+// Grupo I: 4ª seleção = repescagem mundial - usando "Repescagem I"
+// Grupo K: 4ª seleção = repescagem mundial - usando "Repescagem K"
 const GRUPOS = [
-  {id:"A",sels:["EUA","Panamá","Canadá","Cuba"]},
-  {id:"B",sels:["México","Jamaica","Venezuela","Guiana"]},
-  {id:"C",sels:["Argentina","Chile","Peru","Bolívia"]},
-  {id:"D",sels:["Uruguai","Equador","Colômbia","Paraguai"]},
-  {id:"E",sels:["Brasil","Costa Rica","Trinidad e Tobago","El Salvador"]},
-  {id:"F",sels:["Espanha","Marrocos","Congo DR","Zâmbia"]},
-  {id:"G",sels:["Portugal","Camarões","Angola","Gana"]},
-  {id:"H",sels:["França","Egito","Níger","Butão"]},
-  {id:"I",sels:["Alemanha","Suíça","Áustria","Cazaquistão"]},
-  {id:"J",sels:["Holanda","Croácia","Hungria","Montenegro"]},
-  {id:"K",sels:["Inglaterra","Eslováquia","Suécia","Kosovo"]},
-  {id:"L",sels:["Itália","Romênia","Noruega","Moldova"]},
+  {id:"A",sels:["México","África do Sul","Coreia do Sul","Rep. Tcheca"]},
+  {id:"B",sels:["Canadá","Catar","Suíça","Bósnia"]},
+  {id:"C",sels:["Brasil","Marrocos","Haiti","Escócia"]},
+  {id:"D",sels:["EUA","Paraguai","Austrália","Europa C"]},
+  {id:"E",sels:["Alemanha","Curaçao","Costa do Marfim","Equador"]},
+  {id:"F",sels:["Holanda","Japão","Tunísia","Europa B"]},
+  {id:"G",sels:["Bélgica","Egito","Irã","Nova Zelândia"]},
+  {id:"H",sels:["Espanha","Cabo Verde","Arábia Saudita","Uruguai"]},
+  {id:"I",sels:["França","Senegal","Noruega","Repescagem I"]},
+  {id:"J",sels:["Argentina","Argélia","Áustria","Jordânia"]},
+  {id:"K",sels:["Portugal","Uzbequistão","Colômbia","Repescagem K"]},
+  {id:"L",sels:["Inglaterra","Croácia","Gana","Panamá"]},
 ];
 const FLAGS = {
   "México":"🇲🇽","EUA":"🇺🇸","Uruguai":"🇺🇾","Brasil":"🇧🇷","Espanha":"🇪🇸",
   "Marrocos":"🇲🇦","França":"🇫🇷","Alemanha":"🇩🇪","Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Portugal":"🇵🇹",
-  "Argentina":"🇦🇷","Holanda":"🇳🇱","Itália":"🇮🇹","Croácia":"🇭🇷","Canadá":"🇨🇦",
-  "Peru":"🇵🇪","Chile":"🇨🇱","Colômbia":"🇨🇴","Costa Rica":"🇨🇷","Equador":"🇪🇨",
-  "Suíça":"🇨🇭","Egito":"🇪🇬","Venezuela":"🇻🇪","Camarões":"🇨🇲","Romênia":"🇷🇴",
-  "Bolívia":"🇧🇴","Panamá":"🇵🇦","Cuba":"🇨🇺","Jamaica":"🇯🇲","Guiana":"🇬🇾",
-  "Paraguai":"🇵🇾","Trinidad e Tobago":"🇹🇹","El Salvador":"🇸🇻","Congo DR":"🇨🇩",
-  "Zâmbia":"🇿🇲","Angola":"🇦🇴","Gana":"🇬🇭","Níger":"🇳🇪","Butão":"🇧🇹",
-  "Áustria":"🇦🇹","Cazaquistão":"🇰🇿","Hungria":"🇭🇺","Montenegro":"🇲🇪",
-  "Eslováquia":"🇸🇰","Suécia":"🇸🇪","Kosovo":"🇽🇰","Noruega":"🇳🇴","Moldova":"🇲🇩",
+  "Argentina":"🇦🇷","Holanda":"🇳🇱","Croácia":"🇭🇷","Canadá":"🇨🇦","Equador":"🇪🇨",
+  "Colômbia":"🇨🇴","Suíça":"🇨🇭","Egito":"🇪🇬","Camarões":"🇨🇲","Paraguai":"🇵🇾",
+  "Panamá":"🇵🇦","Gana":"🇬🇭","Áustria":"🇦🇹","Noruega":"🇳🇴","Austrália":"🇦🇺",
+  "México":"🇲🇽","África do Sul":"🇿🇦","Coreia do Sul":"🇰🇷","Rep. Tcheca":"🇨🇿",
+  "Catar":"🇶🇦","Bósnia":"🇧🇦","Haiti":"🇭🇹","Escócia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Curaçao":"🇨🇼","Costa do Marfim":"🇨🇮","Japão":"🇯🇵","Tunísia":"🇹🇳",
+  "Bélgica":"🇧🇪","Irã":"🇮🇷","Nova Zelândia":"🇳🇿","Cabo Verde":"🇨🇻",
+  "Arábia Saudita":"🇸🇦","Senegal":"🇸🇳","Argélia":"🇩🇿","Jordânia":"🇯🇴",
+  "Uzbequistão":"🇺🇿","Europa C":"🏳️","Europa B":"🏳️","Repescagem I":"🏳️","Repescagem K":"🏳️",
 };
 const buildFG = () => {
-  const jogos=[]; let n=1;
-  // Correct Copa 2026 matchups:
-  // R1: 0v1, 2v3 | R2: 0v2, 1v3 | R3 (simultaneous): 0v3, 1v2
-  // Schedule: R1=Jun11-14, R2=Jun18-21, R3=Jun25-28 (BRT times)
-  // UTC times: 16h, 19h, 23h (= 13h, 16h, 20h BRT)
-  const slots = [
-    // Round 1: Jun 11-14, 3 games/day
-    {d:11,h:16},{d:11,h:19},{d:11,h:23},
-    {d:12,h:16},{d:12,h:19},{d:12,h:23},
-    {d:13,h:16},{d:13,h:19},{d:13,h:23},
-    {d:14,h:16},{d:14,h:19},{d:14,h:23},
-    // Round 2: Jun 18-21
-    {d:18,h:16},{d:18,h:19},{d:18,h:23},
-    {d:19,h:16},{d:19,h:19},{d:19,h:23},
-    {d:20,h:16},{d:20,h:19},{d:20,h:23},
-    {d:21,h:16},{d:21,h:19},{d:21,h:23},
+  // Fonte: FIFA/GE Globo - horários de Brasília convertidos para UTC (BRT = UTC-3)
+  // D(ano, mês, dia, hora_UTC, min)
+  const B=(h)=>h+3; // BRT para UTC
+  return [
+    // GRUPO A
+    {id:"fg_1",grupo:"A",rodada:1,casa:"México",fora:"África do Sul",kickoff:D(2026,6,11,B(16),0),fase:"grupos"},
+    {id:"fg_2",grupo:"A",rodada:1,casa:"Coreia do Sul",fora:"Rep. Tcheca",kickoff:D(2026,6,11,B(23),0),fase:"grupos"},
+    {id:"fg_3",grupo:"A",rodada:2,casa:"México",fora:"Coreia do Sul",kickoff:D(2026,6,18,B(22),0),fase:"grupos"},
+    {id:"fg_4",grupo:"A",rodada:2,casa:"África do Sul",fora:"Rep. Tcheca",kickoff:D(2026,6,18,B(13),0),fase:"grupos"},
+    {id:"fg_5",grupo:"A",rodada:3,casa:"Rep. Tcheca",fora:"México",kickoff:D(2026,6,24,B(22),0),fase:"grupos"},
+    {id:"fg_6",grupo:"A",rodada:3,casa:"África do Sul",fora:"Coreia do Sul",kickoff:D(2026,6,24,B(22),0),fase:"grupos"},
+    // GRUPO B
+    {id:"fg_7",grupo:"B",rodada:1,casa:"Canadá",fora:"Bósnia",kickoff:D(2026,6,12,B(16),0),fase:"grupos"},
+    {id:"fg_8",grupo:"B",rodada:1,casa:"Catar",fora:"Suíça",kickoff:D(2026,6,13,B(16),0),fase:"grupos"},
+    {id:"fg_9",grupo:"B",rodada:2,casa:"Canadá",fora:"Catar",kickoff:D(2026,6,18,B(19),0),fase:"grupos"},
+    {id:"fg_10",grupo:"B",rodada:2,casa:"Suíça",fora:"Bósnia",kickoff:D(2026,6,18,B(16),0),fase:"grupos"},
+    {id:"fg_11",grupo:"B",rodada:3,casa:"Suíça",fora:"Canadá",kickoff:D(2026,6,24,B(16),0),fase:"grupos"},
+    {id:"fg_12",grupo:"B",rodada:3,casa:"Bósnia",fora:"Catar",kickoff:D(2026,6,24,B(16),0),fase:"grupos"},
+    // GRUPO C
+    {id:"fg_13",grupo:"C",rodada:1,casa:"Brasil",fora:"Marrocos",kickoff:D(2026,6,13,B(19),0),fase:"grupos"},
+    {id:"fg_14",grupo:"C",rodada:1,casa:"Haiti",fora:"Escócia",kickoff:D(2026,6,13,B(22),0),fase:"grupos"},
+    {id:"fg_15",grupo:"C",rodada:2,casa:"Brasil",fora:"Haiti",kickoff:D(2026,6,19,B(22),0),fase:"grupos"},
+    {id:"fg_16",grupo:"C",rodada:2,casa:"Escócia",fora:"Marrocos",kickoff:D(2026,6,19,B(19),0),fase:"grupos"},
+    {id:"fg_17",grupo:"C",rodada:3,casa:"Escócia",fora:"Brasil",kickoff:D(2026,6,24,B(19),0),fase:"grupos"},
+    {id:"fg_18",grupo:"C",rodada:3,casa:"Marrocos",fora:"Haiti",kickoff:D(2026,6,24,B(19),0),fase:"grupos"},
+    // GRUPO D
+    {id:"fg_19",grupo:"D",rodada:1,casa:"EUA",fora:"Paraguai",kickoff:D(2026,6,12,B(22),0),fase:"grupos"},
+    {id:"fg_20",grupo:"D",rodada:1,casa:"Austrália",fora:"Europa C",kickoff:D(2026,6,13,B(1),0),fase:"grupos"},
+    {id:"fg_21",grupo:"D",rodada:2,casa:"EUA",fora:"Austrália",kickoff:D(2026,6,19,B(16),0),fase:"grupos"},
+    {id:"fg_22",grupo:"D",rodada:2,casa:"Europa C",fora:"Paraguai",kickoff:D(2026,6,19,B(1),0),fase:"grupos"},
+    {id:"fg_23",grupo:"D",rodada:3,casa:"Europa C",fora:"EUA",kickoff:D(2026,6,25,B(23),0),fase:"grupos"},
+    {id:"fg_24",grupo:"D",rodada:3,casa:"Paraguai",fora:"Austrália",kickoff:D(2026,6,25,B(23),0),fase:"grupos"},
+    // GRUPO E
+    {id:"fg_25",grupo:"E",rodada:1,casa:"Alemanha",fora:"Curaçao",kickoff:D(2026,6,14,B(14),0),fase:"grupos"},
+    {id:"fg_26",grupo:"E",rodada:1,casa:"Costa do Marfim",fora:"Equador",kickoff:D(2026,6,14,B(20),0),fase:"grupos"},
+    {id:"fg_27",grupo:"E",rodada:2,casa:"Alemanha",fora:"Costa do Marfim",kickoff:D(2026,6,20,B(17),0),fase:"grupos"},
+    {id:"fg_28",grupo:"E",rodada:2,casa:"Equador",fora:"Curaçao",kickoff:D(2026,6,20,B(21),0),fase:"grupos"},
+    {id:"fg_29",grupo:"E",rodada:3,casa:"Equador",fora:"Alemanha",kickoff:D(2026,6,25,B(17),0),fase:"grupos"},
+    {id:"fg_30",grupo:"E",rodada:3,casa:"Curaçao",fora:"Costa do Marfim",kickoff:D(2026,6,25,B(17),0),fase:"grupos"},
+    // GRUPO F
+    {id:"fg_31",grupo:"F",rodada:1,casa:"Holanda",fora:"Japão",kickoff:D(2026,6,14,B(17),0),fase:"grupos"},
+    {id:"fg_32",grupo:"F",rodada:1,casa:"Europa B",fora:"Tunísia",kickoff:D(2026,6,14,B(23),0),fase:"grupos"},
+    {id:"fg_33",grupo:"F",rodada:2,casa:"Holanda",fora:"Europa B",kickoff:D(2026,6,20,B(14),0),fase:"grupos"},
+    {id:"fg_34",grupo:"F",rodada:2,casa:"Tunísia",fora:"Japão",kickoff:D(2026,6,21,B(1),0),fase:"grupos"},
+    {id:"fg_35",grupo:"F",rodada:3,casa:"Tunísia",fora:"Holanda",kickoff:D(2026,6,25,B(20),0),fase:"grupos"},
+    {id:"fg_36",grupo:"F",rodada:3,casa:"Japão",fora:"Europa B",kickoff:D(2026,6,25,B(20),0),fase:"grupos"},
+    // GRUPO G
+    {id:"fg_37",grupo:"G",rodada:1,casa:"Bélgica",fora:"Egito",kickoff:D(2026,6,15,B(16),0),fase:"grupos"},
+    {id:"fg_38",grupo:"G",rodada:1,casa:"Irã",fora:"Nova Zelândia",kickoff:D(2026,6,15,B(22),0),fase:"grupos"},
+    {id:"fg_39",grupo:"G",rodada:2,casa:"Bélgica",fora:"Irã",kickoff:D(2026,6,21,B(16),0),fase:"grupos"},
+    {id:"fg_40",grupo:"G",rodada:2,casa:"Nova Zelândia",fora:"Egito",kickoff:D(2026,6,21,B(22),0),fase:"grupos"},
+    {id:"fg_41",grupo:"G",rodada:3,casa:"Egito",fora:"Irã",kickoff:D(2026,6,27,B(0),0),fase:"grupos"},
+    {id:"fg_42",grupo:"G",rodada:3,casa:"Nova Zelândia",fora:"Bélgica",kickoff:D(2026,6,27,B(0),0),fase:"grupos"},
+    // GRUPO H
+    {id:"fg_43",grupo:"H",rodada:1,casa:"Espanha",fora:"Cabo Verde",kickoff:D(2026,6,15,B(13),0),fase:"grupos"},
+    {id:"fg_44",grupo:"H",rodada:1,casa:"Arábia Saudita",fora:"Uruguai",kickoff:D(2026,6,15,B(19),0),fase:"grupos"},
+    {id:"fg_45",grupo:"H",rodada:2,casa:"Espanha",fora:"Arábia Saudita",kickoff:D(2026,6,21,B(13),0),fase:"grupos"},
+    {id:"fg_46",grupo:"H",rodada:2,casa:"Uruguai",fora:"Cabo Verde",kickoff:D(2026,6,21,B(19),0),fase:"grupos"},
+    {id:"fg_47",grupo:"H",rodada:3,casa:"Cabo Verde",fora:"Arábia Saudita",kickoff:D(2026,6,26,B(21),0),fase:"grupos"},
+    {id:"fg_48",grupo:"H",rodada:3,casa:"Uruguai",fora:"Espanha",kickoff:D(2026,6,26,B(21),0),fase:"grupos"},
+    // GRUPO I
+    {id:"fg_49",grupo:"I",rodada:1,casa:"França",fora:"Senegal",kickoff:D(2026,6,16,B(16),0),fase:"grupos"},
+    {id:"fg_50",grupo:"I",rodada:1,casa:"Repescagem I",fora:"Noruega",kickoff:D(2026,6,16,B(19),0),fase:"grupos"},
+    {id:"fg_51",grupo:"I",rodada:2,casa:"França",fora:"Repescagem I",kickoff:D(2026,6,22,B(18),0),fase:"grupos"},
+    {id:"fg_52",grupo:"I",rodada:2,casa:"Noruega",fora:"Senegal",kickoff:D(2026,6,22,B(21),0),fase:"grupos"},
+    {id:"fg_53",grupo:"I",rodada:3,casa:"Noruega",fora:"França",kickoff:D(2026,6,26,B(16),0),fase:"grupos"},
+    {id:"fg_54",grupo:"I",rodada:3,casa:"Senegal",fora:"Repescagem I",kickoff:D(2026,6,26,B(16),0),fase:"grupos"},
+    // GRUPO J
+    {id:"fg_55",grupo:"J",rodada:1,casa:"Argentina",fora:"Argélia",kickoff:D(2026,6,16,B(14),0),fase:"grupos"},
+    {id:"fg_56",grupo:"J",rodada:1,casa:"Áustria",fora:"Jordânia",kickoff:D(2026,6,17,B(1),0),fase:"grupos"},
+    {id:"fg_57",grupo:"J",rodada:2,casa:"Argentina",fora:"Áustria",kickoff:D(2026,6,22,B(14),0),fase:"grupos"},
+    {id:"fg_58",grupo:"J",rodada:2,casa:"Jordânia",fora:"Argélia",kickoff:D(2026,6,23,B(0),0),fase:"grupos"},
+    {id:"fg_59",grupo:"J",rodada:3,casa:"Argélia",fora:"Áustria",kickoff:D(2026,6,27,B(23),0),fase:"grupos"},
+    {id:"fg_60",grupo:"J",rodada:3,casa:"Jordânia",fora:"Argentina",kickoff:D(2026,6,27,B(23),0),fase:"grupos"},
+    // GRUPO K
+    {id:"fg_61",grupo:"K",rodada:1,casa:"Portugal",fora:"Repescagem K",kickoff:D(2026,6,17,B(14),0),fase:"grupos"},
+    {id:"fg_62",grupo:"K",rodada:1,casa:"Uzbequistão",fora:"Colômbia",kickoff:D(2026,6,17,B(23),0),fase:"grupos"},
+    {id:"fg_63",grupo:"K",rodada:2,casa:"Portugal",fora:"Uzbequistão",kickoff:D(2026,6,23,B(14),0),fase:"grupos"},
+    {id:"fg_64",grupo:"K",rodada:2,casa:"Colômbia",fora:"Repescagem K",kickoff:D(2026,6,23,B(23),0),fase:"grupos"},
+    {id:"fg_65",grupo:"K",rodada:3,casa:"Colômbia",fora:"Portugal",kickoff:D(2026,6,27,B(20),30),fase:"grupos"},
+    {id:"fg_66",grupo:"K",rodada:3,casa:"Repescagem K",fora:"Uzbequistão",kickoff:D(2026,6,27,B(20),30),fase:"grupos"},
+    // GRUPO L
+    {id:"fg_67",grupo:"L",rodada:1,casa:"Inglaterra",fora:"Croácia",kickoff:D(2026,6,17,B(17),0),fase:"grupos"},
+    {id:"fg_68",grupo:"L",rodada:1,casa:"Gana",fora:"Panamá",kickoff:D(2026,6,17,B(20),0),fase:"grupos"},
+    {id:"fg_69",grupo:"L",rodada:2,casa:"Inglaterra",fora:"Gana",kickoff:D(2026,6,23,B(17),0),fase:"grupos"},
+    {id:"fg_70",grupo:"L",rodada:2,casa:"Panamá",fora:"Croácia",kickoff:D(2026,6,23,B(20),0),fase:"grupos"},
+    {id:"fg_71",grupo:"L",rodada:3,casa:"Panamá",fora:"Inglaterra",kickoff:D(2026,6,27,B(18),0),fase:"grupos"},
+    {id:"fg_72",grupo:"L",rodada:3,casa:"Croácia",fora:"Gana",kickoff:D(2026,6,27,B(18),0),fase:"grupos"},
   ];
-  // Round 3: groups play simultaneously (2 per day, Jun 25-28)
-  const r3days=[25,25,26,26,27,27,28,28,29,29,30,30];
-  const r3h=[16,19]; // two simultaneous slots per day
-  GRUPOS.forEach((g,gi)=>{
-    const s1=slots[gi*2]||{d:11+Math.floor(gi/2),h:16};
-    const s2=slots[gi*2+1]||{d:11+Math.floor(gi/2),h:19};
-    const s3=slots[12+gi*2]||{d:18+Math.floor(gi/2),h:16};
-    const s4=slots[12+gi*2+1]||{d:18+Math.floor(gi/2),h:19};
-    // R1
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:1,casa:g.sels[0],fora:g.sels[1],kickoff:D(2026,6,s1.d,s1.h,0),fase:"grupos"});
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:1,casa:g.sels[2],fora:g.sels[3],kickoff:D(2026,6,s2.d,s2.h,0),fase:"grupos"});
-    // R2
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:2,casa:g.sels[0],fora:g.sels[2],kickoff:D(2026,6,s3.d,s3.h,0),fase:"grupos"});
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:2,casa:g.sels[1],fora:g.sels[3],kickoff:D(2026,6,s4.d,s4.h,0),fase:"grupos"});
-    // R3 simultaneous
-    const r3d=r3days[gi],r3ha=r3h[gi%2],r3hb=r3h[(gi+1)%2];
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:3,casa:g.sels[0],fora:g.sels[3],kickoff:D(2026,6,r3d,r3ha,0),fase:"grupos"});
-    jogos.push({id:`fg_${n++}`,grupo:g.id,rodada:3,casa:g.sels[1],fora:g.sels[2],kickoff:D(2026,6,r3d,r3hb,0),fase:"grupos"});
-  });
-  return jogos;
 };
 const JOGOS_FG = buildFG();
 const JOGOS_MM = [

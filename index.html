@@ -534,6 +534,7 @@ const JOGOS_MM = [
   {id:"f1",fase:"final",label:"🏆 FINAL",casa:"Venc. S1/S2",fora:"Venc. S3/S4",kickoff:D(2026,7,28,20,0)},
 ];
 const TODOS_JOGOS = [...JOGOS_FG, ...JOGOS_MM];
+const TODOS_JOGOS_AMISTOSOS = [...JOGOS_AMISTOSOS];
 const PERGUNTAS = [
   {id:"p1",txt:"Quem será o campeão da Copa 2026?",opcoes:["Brasil","Argentina","França","Inglaterra","Espanha","Alemanha","Portugal","Holanda","Itália","EUA","Outra seleção"]},
   {id:"p2",txt:"Quem será o artilheiro da Copa 2026?",opcoes:["Vini Jr.","Mbappé","Bellingham","Pedri","Saka","Pulisic","Musiala","Rodri","Outro jogador"]},
@@ -567,7 +568,7 @@ const fbLogin = (email, password) =>
 const fbLogout = () => signOut(auth);
 
 // Create group
-const fbCreateGroup = async (nome, user, finCfg) => {
+const fbCreateGroup = async (nome, user, finCfg, tipo="copa") => {
   const code = code6();
   const groupRef = doc(collection(db,"groups"));
   await setDoc(groupRef, {
@@ -576,6 +577,7 @@ const fbCreateGroup = async (nome, user, finCfg) => {
     members: [{userId:user.uid, apelido:user.displayName, joinedAt:Date.now(), isOwner:true}],
     createdAt: serverTimestamp(),
     financeConfig: finCfg || null,
+    tipo: tipo,
   });
   return { id: groupRef.id, code };
 };
@@ -920,6 +922,7 @@ function CreateGroupModal({user,onClose,onDone}){
   const [busy,setBusy]=useState(false);
   const [created,setCreated]=useState(null);
   const [useFin,setUseFin]=useState(false);
+  const [tipo,setTipo]=useState("copa");
   const [taxa,setTaxa]=useState("");
   const [prazo,setPrazo]=useState("");
   const [dist,setDist]=useState([
@@ -939,8 +942,8 @@ function CreateGroupModal({user,onClose,onDone}){
     setBusy(true);
     try{
       const finCfg=useFin?{taxaEntrada:+taxa,prazoPagamento:prazo,distribuicao:dist.map(d=>({pos:d.pos,label:d.label,pct:Number(d.pct)}))}:null;
-      const {id,code}=await fbCreateGroup(nome.trim(),user,finCfg);
-      setCreated({id,code,nome:nome.trim()});
+      const {id,code}=await fbCreateGroup(nome.trim(),user,finCfg,tipo);
+      setCreated({id,code,nome:nome.trim(),tipo});
     }catch(e){setErr(e.message);}
     setBusy(false);
   };
@@ -964,6 +967,14 @@ function CreateGroupModal({user,onClose,onDone}){
 
   return e(Modal,{title:"➕ CRIAR BOLÃO",onClose},
     e(FInput,{label:"Nome do bolão",type:"text",placeholder:'Ex: "Galera do Trabalho"',value:nome,onChange:ev=>{setNome(ev.target.value);setErr("")},maxLength:40,autoFocus:true,onKeyDown:ev=>ev.key==="Enter"&&!useFin&&goCreate()}),
+
+    e("div",{style:{marginBottom:16}},
+      e("div",{style:{fontSize:12,fontWeight:700,color:"#555",marginBottom:8}},"TIPO DE BOLÃO"),
+      e("div",{style:{display:"flex",gap:8}},
+        e("button",{style:{flex:1,padding:"10px 8px",borderRadius:8,border:`2px solid ${tipo==="copa"?"var(--vd)":"#ddd"}`,background:tipo==="copa"?"#f0f9f4":"#fff",fontWeight:700,fontSize:13,cursor:"pointer",color:tipo==="copa"?"var(--vd)":"#666"},onClick:()=>setTipo("copa")},"⚽ Copa 2026"),
+        e("button",{style:{flex:1,padding:"10px 8px",borderRadius:8,border:`2px solid ${tipo==="amistosos"?"var(--az)":"#ddd"}`,background:tipo==="amistosos"?"#e3f2fd":"#fff",fontWeight:700,fontSize:13,cursor:"pointer",color:tipo==="amistosos"?"var(--az)":"#666"},onClick:()=>setTipo("amistosos")},"🏟️ Amistosos")
+      )
+    ),
 
     e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"12px 14px",background:"#f0f9f4",borderRadius:10,border:"1px solid #c8e6c9",cursor:"pointer"},onClick:()=>setUseFin(f=>!f)},
       e("div",{style:{width:36,height:20,borderRadius:10,background:useFin?"var(--vd)":"#ddd",position:"relative",transition:"background .2s",flexShrink:0}},
@@ -1117,20 +1128,27 @@ function JogoCard({jogo,user,groupId,palpites,results,now}){
 // JOGOS SCREEN
 // ════════════════════════════════════════════════════════════════════════════
 function JogosScreen({user,group,palpites,results}){
-  const [filtro,setFiltro]=useState("grupos");
+  const isAmistosos = group.tipo === "amistosos";
+  const [filtro,setFiltro]=useState(isAmistosos?"amistoso":"grupos");
   const [now,setNow]=useState(Date.now());
   useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),15000);return()=>clearInterval(t);},[]);
 
-  const feitosFG=JOGOS_FG.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
-  const feitosMM=JOGOS_MM.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
-  const total=TODOS_JOGOS.length;
+  const JOGOS_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : TODOS_JOGOS;
+  const JOGOS_FG_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : JOGOS_FG;
+  const JOGOS_MM_ATIVOS = isAmistosos ? [] : JOGOS_MM;
 
-  const FILTROS=[
+  const feitosFG=JOGOS_FG_ATIVOS.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
+  const feitosMM=JOGOS_MM_ATIVOS.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
+  const total=JOGOS_ATIVOS.length;
+
+  const FILTROS=isAmistosos?[
+    {k:"amistoso",l:"Amistosos"},
+  ]:[
     {k:"grupos",l:"Fase de Grupos"},{k:"oitavas",l:"Oitavas"},
     {k:"quartas",l:"Quartas"},{k:"semifinais",l:"Semis"},
     {k:"terceiro",l:"3º Lugar"},{k:"final",l:"🏆 Final"},
   ];
-  const FASE_LABELS={oitavas:"⚔️ OITAVAS",quartas:"🏟️ QUARTAS",semifinais:"🌟 SEMIFINAIS",terceiro:"🥉 3º LUGAR",final:"🏆 GRANDE FINAL"};
+  const FASE_LABELS={oitavas:"⚔️ OITAVAS",quartas:"🏟️ QUARTAS",semifinais:"🌟 SEMIFINAIS",terceiro:"🥉 3º LUGAR",final:"🏆 GRANDE FINAL",amistoso:"🏟️ AMISTOSOS"};
   const e=React.createElement;
 
   return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
@@ -1144,7 +1162,7 @@ function JogosScreen({user,group,palpites,results}){
         ),
         e("div",{style:{textAlign:"right",fontSize:12,color:"rgba(255,255,255,.6)"}},
           e("div",null,`Grupos: ${feitosFG}/${JOGOS_FG.length}`),
-          e("div",null,`Mata-mata: ${feitosMM}/${JOGOS_MM.length}`)
+          e("div",null,`Mata-mata: ${feitosMM}/${JOGOS_MM_ATIVOS.length}`)
         )
       ),
       e("div",{className:"pbar",style:{background:"rgba(255,255,255,.2)"}},
@@ -1153,19 +1171,29 @@ function JogosScreen({user,group,palpites,results}){
     ),
     e("div",{style:{padding:"12px 14px 0"}},
       e("div",{className:"fbar"},FILTROS.map(f=>e("button",{key:f.k,className:`fbtn${filtro===f.k?" on":""}`,onClick:()=>setFiltro(f.k)},f.l))),
-      filtro==="grupos"&&GRUPOS.map(g=>{
-        const jg=JOGOS_FG.filter(j=>j.grupo===g.id);
-        return e("div",{key:g.id,style:{marginBottom:18}},
-          e("div",{className:"fhd"},
-            e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,color:"var(--am)",background:"rgba(255,255,255,.12)",borderRadius:5,width:26,height:26,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},g.id),
-            e("h3",null,`GRUPO ${g.id}`),
-            e("span",null,g.sels.join(" · "))
-          ),
-          jg.map(j=>e(JogoCard,{key:j.id,jogo:j,user,groupId:group.id,palpites,results,now}))
+      (filtro==="grupos"||filtro==="amistoso")&&(()=>{
+        const jogosOrdenados=[...JOGOS_FG_ATIVOS].sort((a,b)=>a.kickoff-b.kickoff);
+        const porDia={};
+        jogosOrdenados.forEach(j=>{
+          const d=new Date(j.kickoff);
+          const chave=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+          if(!porDia[chave])porDia[chave]={data:d,jogos:[]};
+          porDia[chave].jogos.push(j);
+        });
+        const dias=Object.values(porDia).sort((a,b)=>a.data-b.data);
+        const meses=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+        const semana=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+        return dias.map((dia,i)=>
+          e("div",{key:i,style:{marginBottom:18}},
+            e("div",{className:"fhd",style:{background:"rgba(255,255,255,.08)"}},
+              e("h3",null,`${semana[dia.data.getDay()]}, ${dia.data.getDate()} ${meses[dia.data.getMonth()].toUpperCase()}`)
+            ),
+            dia.jogos.map(j=>e(JogoCard,{key:j.id,jogo:j,user,groupId:group.id,palpites,results,now}))
+          )
         );
-      }),
-      filtro!=="grupos"&&(()=>{
-        const jf=JOGOS_MM.filter(j=>j.fase===filtro);
+      })(),
+      filtro!=="grupos"&&filtro!=="amistoso"&&(()=>{
+        const jf=JOGOS_MM_ATIVOS.filter(j=>j.fase===filtro);
         if(!jf.length)return e("div",{className:"empty"},e("p",null,"Nenhum jogo nesta fase ainda."));
         return e("div",{style:{marginBottom:18}},
           e("div",{className:"fhd",style:{background:filtro==="final"?"var(--az)":"var(--vd)"}},e("h3",null,FASE_LABELS[filtro])),
@@ -1182,9 +1210,11 @@ function JogosScreen({user,group,palpites,results}){
 function AoVivoScreen({user,group,palpites,results}){
   const [now,setNow]=useState(Date.now());
   useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),10000);return()=>clearInterval(t);},[]);
+  const isAmistosos = group.tipo === "amistosos";
+  const JOGOS_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : TODOS_JOGOS;
 
-  const jogosAgora=TODOS_JOGOS.filter(j=>{const diff=now-j.kickoff;return diff>=-10*60*1000&&diff<3*60*60*1000;});
-  const proximos=TODOS_JOGOS.filter(j=>j.kickoff>now).sort((a,b)=>a.kickoff-b.kickoff).slice(0,3);
+  const jogosAgora=JOGOS_ATIVOS.filter(j=>{const diff=now-j.kickoff;return diff>=-10*60*1000&&diff<3*60*60*1000;});
+  const proximos=JOGOS_ATIVOS.filter(j=>j.kickoff>now).sort((a,b)=>a.kickoff-b.kickoff).slice(0,3);
   const e=React.createElement;
 
   if(!jogosAgora.length) return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},

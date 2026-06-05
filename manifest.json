@@ -1,0 +1,27 @@
+{
+  "name": "Bolão Copa 2026",
+  "short_name": "Bolão 2026",
+  "description": "Bolão da Copa do Mundo 2026 com seus amigos",
+  "start_url": "./bolao-copa-2026-firebase.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#009C3B",
+  "theme_color": "#009C3B",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "sports"],
+  "screenshots": []
+}

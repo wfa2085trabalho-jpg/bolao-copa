@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#009C3B"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<link rel="manifest" href="./manifest.json"/>
+<link rel="apple-touch-icon" href="./icon-192.png"/>
+<meta name="apple-mobile-web-app-title" content="Bolão 2026"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Bolão Copa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --vd:#009C3B;--vde:#006B29;--am:#FFDF00;--ame:#E6C800;--az:#002776;
+  --bg:#F0F2F0;--cb:#E0E0E0;--ct:#666;--wh:#fff;
+  --sh:0 2px 10px rgba(0,0,0,.08);--shf:0 6px 24px rgba(0,0,0,.15);
+  --r:16px;--rs:10px;
+}
+html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:#222;overflow-x:hidden}
+#root{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative}
+
+/* Loading */
+#splash{position:fixed;inset:0;background:var(--vd);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
+#splash.hide{opacity:0;pointer-events:none}
+.splash-emoji{font-size:64px;animation:bounce 1s ease-in-out infinite alternate}
+.splash-title{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--am);letter-spacing:2px;margin-top:16px}
+.splash-sub{font-size:14px;color:rgba(255,255,255,.7);margin-top:8px}
+.splash-spin{width:28px;height:28px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin-top:24px}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Header */
+.hd{background:var(--vd);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--am);letter-spacing:1px;line-height:1;display:flex;align-items:center;gap:8px}
+.logo-sub{color:rgba(255,255,255,.8);font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:500;display:block;letter-spacing:2px;line-height:1}
+.av-sm{width:34px;height:34px;border-radius:50%;background:var(--am);color:var(--vde);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);cursor:pointer}
+.btn-sair{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Barlow',sans-serif}
+.btn-sair:hover{background:rgba(255,255,255,.25)}
+
+/* Auth */
+.hero{background:var(--vd);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;flex-shrink:0}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,0,0,.04) 20px,rgba(0,0,0,.04) 40px)}
+.hero-badge{display:inline-block;background:var(--am);color:var(--vde);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;padding:4px 12px;border-radius:20px;margin-bottom:16px;position:relative}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#fff;letter-spacing:2px;line-height:1;position:relative}
+.hero-title em{color:var(--am);font-style:normal}
+.hero-sub{color:rgba(255,255,255,.75);font-size:15px;margin-top:8px;position:relative}
+.hero-emoji{font-size:42px;display:block;margin-bottom:12px;position:relative}
+.auth-card{background:#fff;border-radius:var(--r) var(--r) 0 0;margin-top:-20px;padding:28px 24px 40px;flex:1;box-shadow:0 -4px 24px rgba(0,0,0,.08)}
+.tabs{display:flex;margin-bottom:24px;border-radius:var(--rs);overflow:hidden;border:1.5px solid var(--vd)}
+.tab{flex:1;padding:10px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;background:transparent;color:var(--vd);border:none}
+.tab.on{background:var(--vd);color:#fff}
+
+/* Forms */
+.fg{margin-bottom:16px}
+.fl{font-size:13px;font-weight:600;color:var(--ct);margin-bottom:6px;display:block;letter-spacing:.5px}
+.fi{width:100%;padding:12px 14px;border:1.5px solid var(--cb);border-radius:var(--rs);font-family:'Barlow',sans-serif;font-size:15px;color:#222;transition:border-color .2s;background:#fff;outline:none}
+.fi:focus{border-color:var(--vd);box-shadow:0 0 0 3px rgba(0,156,59,.12)}
+.fi::placeholder{color:#bbb}
+.err-box{background:#fff5f5;border:1px solid #fed7d7;color:#c53030;padding:10px 14px;border-radius:8px;font-size:14px;margin:10px 0}
+.ok-box{background:#f0fff4;border:1px solid #9ae6b4;color:#276749;padding:10px 14px;border-radius:8px;font-size:14px;margin:10px 0}
+.warn-box{background:#fffde7;border:1px solid #ffe082;color:#e65100;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;margin:10px 0}
+.info-box{background:#e3f2fd;border:1px solid #90caf9;color:#1565c0;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;margin:10px 0}
+
+/* Buttons */
+.btn-p{width:100%;padding:14px;background:var(--vd);color:#fff;border:none;border-radius:var(--rs);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:background .2s,transform .1s;margin-top:8px;display:block}
+.btn-p:hover{background:var(--vde)}.btn-p:active{transform:scale(.98)}.btn-p:disabled{background:#ccc;cursor:not-allowed}
+.btn-am{width:100%;padding:14px;background:var(--am);color:var(--vde);border:none;border-radius:var(--rs);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1.5px;cursor:pointer;margin-top:8px;display:block}
+.btn-am:hover{background:var(--ame)}
+.btn-sm{padding:8px 16px;background:var(--vd);color:#fff;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.btn-sm:hover{background:var(--vde)}.btn-sm:disabled{background:#ccc;cursor:not-allowed}
+.btn-sm-red{padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.btn-sm-gray{padding:7px 14px;background:#f0f0f0;color:#555;border:1px solid #ddd;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--az);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;padding:10px 24px;border-radius:30px;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,.25);white-space:nowrap;pointer-events:none;animation:toastIn .25s,toastOut .3s 1.8s forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(10px)}}
+
+/* Modal */
+.mo-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.mo{background:#fff;border-radius:var(--r) var(--r) 0 0;width:100%;max-width:430px;padding:24px 24px 36px;animation:slideUp .25s cubic-bezier(.16,1,.3,1);max-height:92vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mo-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.mo-t{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--vd);letter-spacing:1px}
+.mo-x{width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#666}
+
+/* Page */
+.pg{padding:16px 14px 80px;flex:1;overflow-y:auto}
+.sec{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ct);text-transform:uppercase;margin-bottom:12px}
+.pbar{height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.pfill{height:100%;background:var(--vd);border-radius:3px;transition:width .4s}
+
+/* Dashboard */
+.gb{background:var(--vd);border-radius:var(--r);padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.gb::after{content:'⚽';position:absolute;right:16px;bottom:-8px;font-size:64px;opacity:.12}
+.av-lg{width:48px;height:48px;border-radius:50%;background:var(--am);color:var(--vde);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,.3);flex-shrink:0}
+.gt h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:#fff}
+.gt p{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px}
+.ag-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.ag-card{background:#fff;border-radius:var(--r);padding:16px 12px;text-align:center;box-shadow:var(--sh);border:1.5px solid var(--cb);cursor:pointer;transition:all .15s}
+.ag-card:hover{transform:translateY(-2px);box-shadow:var(--shf);border-color:var(--vd)}
+.ag-card .icon{font-size:26px;margin-bottom:6px}
+.ag-card .lbl{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:#222}
+.ag-card .sub{font-size:11px;color:#999;margin-top:2px}
+.gl{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.gc{background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);border:1.5px solid var(--cb);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.gc:hover{transform:translateY(-2px);box-shadow:var(--shf)}
+.gc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.gc-n{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;color:#222}
+.badge-adm{background:var(--am);color:var(--vde);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.badge-m{background:#e8f5e9;color:var(--vde);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.cp{background:#f0f0f0;color:#444;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:2px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:5px}
+.cp:hover{background:var(--am);color:var(--vde)}
+.empty{text-align:center;padding:36px 20px;background:#fff;border-radius:var(--r);border:2px dashed var(--cb)}
+.empty p{font-size:13px;color:#999;margin-top:8px}
+
+/* Group nav */
+.gn-bar{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.15);overflow-x:auto}
+.gn-bar::-webkit-scrollbar{display:none}
+.gn-btn{flex-shrink:0;padding:11px 10px;background:none;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.6);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.gn-btn.on{color:var(--am);border-bottom-color:var(--am)}
+.back-btn{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);font-size:14px;font-weight:600;background:none;border:none;cursor:pointer;padding:12px 0 0;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px}
+
+/* Filter */
+.fbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.fbar::-webkit-scrollbar{display:none}
+.fbtn{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--cb);background:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;color:#555;white-space:nowrap}
+.fbtn.on{background:var(--vd);color:#fff;border-color:var(--vd)}
+
+/* Fase header */
+.fhd{background:var(--vd);border-radius:var(--rs);padding:9px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.fhd h3{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--am);letter-spacing:1px}
+.fhd span{font-size:11px;color:rgba(255,255,255,.6);margin-left:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.gtag{background:var(--am);color:var(--vde);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:1px;flex-shrink:0}
+.ktag{background:var(--az);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:1px;flex-shrink:0}
+
+/* Jogo card */
+.jc{background:#fff;border-radius:var(--rs);margin-bottom:9px;border:1.5px solid var(--cb);overflow:hidden;transition:box-shadow .15s}
+.jc.live-border{border-color:#e53e3e;box-shadow:0 0 0 2px rgba(229,62,62,.2)}
+.jc-h{padding:7px 12px;background:#f8f8f8;border-bottom:1px solid var(--cb);display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.jmeta{font-size:11px;color:#999;font-weight:600}
+.st-ab{background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif}
+.st-fc{background:#fce4ec;color:#c62828;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif}
+.st-br{background:#fff3e0;color:#e65100;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif}
+.st-lv{background:#ffebee;color:#c62828;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.jb{padding:11px 12px}
+.jt{display:flex;align-items:center;gap:6px}
+.tn{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:#222;line-height:1.2}
+.tn.r{text-align:right}
+.tf{font-size:20px}
+.jvs{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#ddd;flex-shrink:0;padding:0 4px}
+.res-box{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;padding:6px 10px;background:#f0f9f4;border-radius:8px;border:1px solid #c8e6c9}
+.res-placar{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--vd);letter-spacing:4px}
+.live-box{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;padding:6px 10px;background:#fff5f5;border-radius:8px;border:1px solid #ffcdd2}
+.live-box .sc{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#c62828;letter-spacing:4px}
+.pr{display:flex;align-items:center;gap:8px;margin-top:10px}
+.plbl{font-size:11px;color:#999;font-weight:700;flex-shrink:0;letter-spacing:.5px}
+.si-wrap{display:flex;align-items:center;gap:6px;flex:1;justify-content:center}
+.si{width:48px;height:40px;text-align:center;border:1.5px solid var(--cb);border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--vd);background:#fff;outline:none;transition:border-color .2s}
+.si:focus{border-color:var(--vd);box-shadow:0 0 0 3px rgba(0,156,59,.12)}
+.si:disabled{background:#f5f5f5;color:#ccc;cursor:not-allowed}
+.ssep{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#ccc}
+.bsv{padding:7px 14px;background:var(--vd);color:#fff;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;transition:background .2s}
+.bsv:hover{background:var(--vde)}.bsv:disabled{background:#ccc;cursor:not-allowed}
+.psv{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--vd);font-weight:700;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.p7{background:#fff9c4;color:#f57f17;font-size:12px;font-weight:700;padding:2px 7px;border-radius:8px;font-family:'Barlow Condensed',sans-serif}
+.p2{background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:700;padding:2px 7px;border-radius:8px;font-family:'Barlow Condensed',sans-serif}
+.p0{background:#fce4ec;color:#c62828;font-size:12px;font-weight:700;padding:2px 7px;border-radius:8px;font-family:'Barlow Condensed',sans-serif}
+
+/* Ranking */
+.rk{background:#fff;border-radius:var(--r);overflow:hidden;border:1.5px solid var(--cb);box-shadow:var(--sh)}
+.rk-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--cb);cursor:pointer;transition:background .15s}
+.rk-row:last-child{border-bottom:none}
+.rk-row:hover{background:#f9f9f9}
+.rk-row.eu{background:#fffde7}
+.rk-pos{width:28px;font-family:'Bebas Neue',sans-serif;font-size:20px;color:#ccc;text-align:center;flex-shrink:0}
+.g1{color:#FFD700}.g2{color:#C0C0C0}.g3{color:#CD7F32}
+.rk-av{width:36px;height:36px;border-radius:50%;background:var(--vd);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rk-av.eu{background:var(--am);color:var(--vde)}
+.rk-pts{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--vd);flex-shrink:0}
+.rk-nm{font-weight:600;font-size:15px}
+.rk-sb{font-size:11px;color:#999}
+.delta-up{color:#2e7d32;font-size:12px;font-weight:700;font-family:'Barlow Condensed',sans-serif}
+.delta-dn{color:#c62828;font-size:12px;font-weight:700;font-family:'Barlow Condensed',sans-serif}
+.delta-eq{color:#999;font-size:12px;font-weight:700}
+
+/* AoVivo */
+.live-dot{width:10px;height:10px;border-radius:50%;background:#ff5252;display:inline-block;margin-right:6px;animation:pulse 1s infinite}
+.live-card{background:#fff;border-radius:var(--r);margin-bottom:14px;overflow:hidden;border:2px solid #ef9a9a}
+.live-card-h{background:linear-gradient(135deg,#c62828,#b71c1c);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.palp-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1.5px solid var(--cb);background:#fafafa;margin-bottom:6px}
+.palp-row.ex{background:#f0fff4;border-color:#66bb6a}
+.palp-row.vn{background:#fffde7;border-color:#ffd54f}
+.palp-row.er{background:#fff5f5;border-color:#ef9a9a}
+.mini-av{width:30px;height:30px;border-radius:50%;background:var(--vd);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mini-av.eu{background:var(--am);color:var(--vde)}
+
+/* Especiais */
+.eq{background:#fff;border-radius:var(--r);margin-bottom:14px;border:1.5px solid var(--cb);overflow:hidden}
+.eq-h{padding:13px 16px;background:linear-gradient(135deg,var(--az),#0033aa);display:flex;align-items:flex-start;gap:10px}
+.eq-n{width:26px;height:26px;border-radius:50%;background:var(--am);color:var(--az);font-family:'Bebas Neue',sans-serif;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eq-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;color:#fff;line-height:1.4}
+.eq-p{font-size:11px;color:var(--am);font-weight:700;margin-top:2px}
+.eq-o{padding:12px 16px;display:flex;flex-direction:column;gap:7px}
+.opbtn{padding:10px 14px;border:1.5px solid var(--cb);border-radius:8px;background:#fff;font-family:'Barlow',sans-serif;font-size:14px;color:#333;cursor:pointer;transition:all .15s;text-align:left;width:100%}
+.opbtn:hover:not(:disabled){border-color:var(--vd);background:#f0fff4}
+.opbtn.on{border-color:var(--vd);background:#e8f5e9;color:var(--vde);font-weight:600}
+.opbtn.correto{border-color:#2e7d32;background:#e8f5e9;color:#1b5e20;font-weight:700}
+.opbtn.errado{border-color:#c62828;background:#ffebee;color:#c62828}
+.opbtn:disabled{cursor:not-allowed;opacity:.7}
+
+/* Admin */
+.admin-h{background:linear-gradient(135deg,var(--az),#1a237e);padding:14px;color:#fff}
+.admin-row{display:flex;flex-direction:column;gap:10px;background:#fff;border-radius:var(--rs);padding:14px;border:1.5px solid var(--cb);margin-bottom:10px}
+.admin-row.has-r{border-color:#66bb6a}
+.res-inputs{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.res-input{width:52px;height:40px;text-align:center;border:1.5px solid var(--cb);border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--az);background:#fff;outline:none}
+.res-input:focus{border-color:var(--az)}
+.res-badge{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--vde);background:#e8f5e9;border:1px solid #a5d6a7;padding:4px 12px;border-radius:8px;letter-spacing:3px}
+
+/* Finance */
+.fin-hero{background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:16px 14px 20px;color:#fff;flex-shrink:0}
+.fin-card{background:#fff;border-radius:var(--r);padding:16px;margin-bottom:14px;border:1.5px solid var(--cb);box-shadow:var(--sh)}
+.fin-card-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:12px}
+.fundo-valor{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#1b5e20;line-height:1;letter-spacing:1px;text-align:center}
+.fundo-label{font-size:12px;color:#999;font-weight:700;letter-spacing:1px;margin-top:4px;text-align:center}
+.premio-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5}
+.premio-row:last-child{border-bottom:none}
+.premio-pos{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;flex-shrink:0}
+.pos-1{background:#FFD700;color:#5d4037}.pos-2{background:#E0E0E0;color:#424242}.pos-3{background:#FFCC80;color:#5d4037}.pos-n{background:#f5f5f5;color:#777}
+.premio-valor{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#1b5e20;flex-shrink:0}
+.pct-badge{background:#e8f5e9;color:#1b5e20;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.pag-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #f5f5f5;transition:background .15s}
+.pag-row:last-child{border-bottom:none}
+.pag-av{width:36px;height:36px;border-radius:50%;background:var(--vd);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pag-av.pago{background:#1b5e20}.pag-av.npago{background:#c62828}.pag-av.eu-av{background:var(--am);color:var(--vde)}
+.pago-tag{background:#e8f5e9;color:#1b5e20;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;flex-shrink:0}
+.npago-tag{background:#ffebee;color:#c62828;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;flex-shrink:0}
+.toggle-pag{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;transition:background .25s;position:relative;flex-shrink:0}
+.toggle-pag::after{content:'';position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.toggle-on{background:#1b5e20}.toggle-on::after{left:23px}
+.toggle-off{background:#ddd}.toggle-off::after{left:3px}
+.obs-input{flex:1;min-width:0;padding:6px 10px;border:1px solid var(--cb);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;color:#333}
+.obs-input:focus{border-color:var(--vd)}
+.legal-footer{background:#f5f5f5;border:1px solid #e0e0e0;border-radius:10px;padding:12px 14px;margin:14px 0;font-size:12px;color:#777;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.fin-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.15)}
+.fin-tab{flex:1;padding:10px 6px;background:none;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.6);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.fin-tab.on{color:var(--am);border-bottom-color:var(--am)}
+
+/* Profile / Hist */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-cell{background:#fff;border-radius:var(--rs);padding:12px 8px;text-align:center;border:1px solid var(--cb)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--vd);line-height:1}
+.stat-lbl{font-size:10px;color:#999;font-weight:700;letter-spacing:.5px;margin-top:2px}
+.hist-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #f5f5f5;font-size:13px}
+.hist-row:last-child{border-bottom:none}
+
+/* Countdown */
+.countdown-banner{background:var(--az);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.count-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--am);line-height:1}
+.count-label{font-size:10px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px}
+
+
+/* ── PWA Install Button ── */
+.install-btn{position:fixed;bottom:20px;right:16px;background:var(--am);color:var(--vde);border:none;border-radius:30px;padding:10px 18px;font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:150;display:flex;align-items:center;gap:8px;animation:slideInRight .4s cubic-bezier(.16,1,.3,1)}
+@keyframes slideInRight{from{transform:translateX(120px);opacity:0}to{transform:translateX(0);opacity:1}}
+.install-btn:hover{background:var(--ame);transform:scale(1.04)}
+
+/* Sync indicator */
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.sync-ok{background:#4caf50}
+.sync-load{background:#ff9800;animation:pulse 1s infinite}
+.sync-err{background:#f44336}
+
+/* Cfg finance */
+.cfg-label{font-size:13px;font-weight:700;color:#555;margin-bottom:6px;display:block}
+.cfg-input{width:100%;padding:11px 14px;border:1.5px solid var(--cb);border-radius:var(--rs);font-family:'Barlow',sans-serif;font-size:15px;color:#222;background:#fff;outline:none;margin-bottom:14px}
+.cfg-input:focus{border-color:var(--vd)}
+.dist-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dist-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;flex-shrink:0}
+.dist-input{flex:1;padding:9px 10px;border:1.5px solid var(--cb);border-radius:8px;font-family:'Barlow',sans-serif;font-size:15px;color:#222;background:#fff;outline:none;text-align:center;width:60px}
+.dist-input:focus{border-color:var(--vd)}
+.pct-ok{font-size:12px;color:#2e7d32;font-weight:700;margin-left:6px}
+.pct-err{font-size:12px;color:#c62828;font-weight:700;margin-left:6px}
+</style>
+</head>
+<body>
+
+<!-- Splash screen -->
+<div id="splash">
+  <span class="splash-emoji">⚽</span>
+  <div class="splash-title">BOLÃO COPA 2026</div>
+  <div class="splash-sub">Carregando...</div>
+  <div class="splash-spin"></div>
+</div>
+
+<div id="root"></div>
+
+<button id="install-btn" onclick="handleInstall()" class="install-btn" style="display:none">
+  📲 Instalar App
+</button>
+
+
+
+<!-- Firebase + React via CDN -->
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18",
+    "react-dom/client": "https://esm.sh/react-dom@18/client",
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+  }
+}
+</script>
+
+<script type="module">
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { createRoot } from "react-dom/client";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, onAuthStateChanged, updateProfile
+} from "firebase/auth";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+  collection, query, where, onSnapshot, addDoc, serverTimestamp,
+  orderBy, getDocs, writeBatch, increment, arrayUnion
+} from "firebase/firestore";
+
+// ════════════════════════════════════════════════════════════════════════════
+// FIREBASE INIT
+// ════════════════════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyBecWqrnZeu8MUzw7SyR3WZ61Ap2dSkz9g",
+  authDomain: "bolao-copa-2026-e841a.firebaseapp.com",
+  projectId: "bolao-copa-2026-e841a",
+  storageBucket: "bolao-copa-2026-e841a.firebasestorage.app",
+  messagingSenderId: "1087154206240",
+  appId: "1:1087154206240:web:9c7255ce8d34f621d56e45"
+};
+const fbApp  = initializeApp(firebaseConfig);
+const auth   = getAuth(fbApp);
+const db     = getFirestore(fbApp);
+
+// ════════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════════════════
+const code6 = () => {
+  const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from({length:6}, () => c[Math.floor(Math.random()*c.length)]).join("");
+};
+const fmtBRL = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const D = (y,mo,d,h,mi) => new Date(Date.UTC(y,mo-1,d,h,mi)).getTime();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SCORING
+// ════════════════════════════════════════════════════════════════════════════
+const resDir = v => v.casa > v.fora ? "c" : v.casa < v.fora ? "f" : "e";
+const calcPts = (p, r) => {
+  if (!r || r.casa == null) return null;
+  if (p.casa === r.casa && p.fora === r.fora) return 7;
+  return resDir(p) === resDir(r) ? 2 : 0;
+};
+
+// ════════════════════════════════════════════════════════════════════════════
+// COPA 2026 DATA
+// ════════════════════════════════════════════════════════════════════════════
+// Grupos oficiais FIFA - sorteio dezembro 2024
+// Grupo A: 4ª seleção = Rep. Tcheca (venceu playoff europeu)
+// Grupo B: 4ª seleção = Bósnia (venceu playoff europeu)
+// Grupo D: 4ª seleção = Rep. Tcheca/Turquia/Kosovo/Romênia (playoff) - usando "Europa C"
+// Grupo F: 4ª seleção = playoff europeu - usando "Europa B"
+// Grupo I: 4ª seleção = repescagem mundial - usando "Repescagem I"
+// Grupo K: 4ª seleção = repescagem mundial - usando "Repescagem K"
+const GRUPOS = [
+  {id:"A",sels:["México","África do Sul","Coreia do Sul","Rep. Tcheca"]},
+  {id:"B",sels:["Canadá","Catar","Suíça","Bósnia"]},
+  {id:"C",sels:["Brasil","Marrocos","Haiti","Escócia"]},
+  {id:"D",sels:["EUA","Paraguai","Austrália","Europa C"]},
+  {id:"E",sels:["Alemanha","Curaçao","Costa do Marfim","Equador"]},
+  {id:"F",sels:["Holanda","Japão","Tunísia","Europa B"]},
+  {id:"G",sels:["Bélgica","Egito","Irã","Nova Zelândia"]},
+  {id:"H",sels:["Espanha","Cabo Verde","Arábia Saudita","Uruguai"]},
+  {id:"I",sels:["França","Senegal","Noruega","Repescagem I"]},
+  {id:"J",sels:["Argentina","Argélia","Áustria","Jordânia"]},
+  {id:"K",sels:["Portugal","Uzbequistão","Colômbia","Repescagem K"]},
+  {id:"L",sels:["Inglaterra","Croácia","Gana","Panamá"]},
+];
+const FLAGS = {
+  "México":"🇲🇽","EUA":"🇺🇸","Uruguai":"🇺🇾","Brasil":"🇧🇷","Espanha":"🇪🇸",
+  "Marrocos":"🇲🇦","França":"🇫🇷","Alemanha":"🇩🇪","Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Portugal":"🇵🇹",
+  "Argentina":"🇦🇷","Holanda":"🇳🇱","Croácia":"🇭🇷","Canadá":"🇨🇦","Equador":"🇪🇨",
+  "Colômbia":"🇨🇴","Suíça":"🇨🇭","Egito":"🇪🇬","Camarões":"🇨🇲","Paraguai":"🇵🇾",
+  "Panamá":"🇵🇦","Gana":"🇬🇭","Áustria":"🇦🇹","Noruega":"🇳🇴","Austrália":"🇦🇺",
+  "México":"🇲🇽","África do Sul":"🇿🇦","Coreia do Sul":"🇰🇷","Rep. Tcheca":"🇨🇿",
+  "Catar":"🇶🇦","Bósnia":"🇧🇦","Haiti":"🇭🇹","Escócia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Curaçao":"🇨🇼","Costa do Marfim":"🇨🇮","Japão":"🇯🇵","Tunísia":"🇹🇳",
+  "Bélgica":"🇧🇪","Irã":"🇮🇷","Nova Zelândia":"🇳🇿","Cabo Verde":"🇨🇻",
+  "Arábia Saudita":"🇸🇦","Senegal":"🇸🇳","Argélia":"🇩🇿","Jordânia":"🇯🇴",
+  "Uzbequistão":"🇺🇿","Europa C":"🏳️","Europa B":"🏳️","Repescagem I":"🏳️","Repescagem K":"🏳️",
+  "Irlanda":"🇮🇪","Chile":"🇨🇱","Mianmar":"🇲🇲","Guam":"🇬🇺","Peru":"🇵🇪",
+};
+const buildFG = () => {
+  // Fonte: FIFA/GE Globo - horários de Brasília convertidos para UTC (BRT = UTC-3)
+  // D(ano, mês, dia, hora_UTC, min)
+  const B=(h)=>h+3; // BRT para UTC
+  return [
+    // GRUPO A
+    {id:"fg_1",grupo:"A",rodada:1,casa:"México",fora:"África do Sul",kickoff:D(2026,6,11,B(16),0),fase:"grupos"},
+    {id:"fg_2",grupo:"A",rodada:1,casa:"Coreia do Sul",fora:"Rep. Tcheca",kickoff:D(2026,6,11,B(23),0),fase:"grupos"},
+    {id:"fg_3",grupo:"A",rodada:2,casa:"México",fora:"Coreia do Sul",kickoff:D(2026,6,18,B(22),0),fase:"grupos"},
+    {id:"fg_4",grupo:"A",rodada:2,casa:"África do Sul",fora:"Rep. Tcheca",kickoff:D(2026,6,18,B(13),0),fase:"grupos"},
+    {id:"fg_5",grupo:"A",rodada:3,casa:"Rep. Tcheca",fora:"México",kickoff:D(2026,6,24,B(22),0),fase:"grupos"},
+    {id:"fg_6",grupo:"A",rodada:3,casa:"África do Sul",fora:"Coreia do Sul",kickoff:D(2026,6,24,B(22),0),fase:"grupos"},
+    // GRUPO B
+    {id:"fg_7",grupo:"B",rodada:1,casa:"Canadá",fora:"Bósnia",kickoff:D(2026,6,12,B(16),0),fase:"grupos"},
+    {id:"fg_8",grupo:"B",rodada:1,casa:"Catar",fora:"Suíça",kickoff:D(2026,6,13,B(16),0),fase:"grupos"},
+    {id:"fg_9",grupo:"B",rodada:2,casa:"Canadá",fora:"Catar",kickoff:D(2026,6,18,B(19),0),fase:"grupos"},
+    {id:"fg_10",grupo:"B",rodada:2,casa:"Suíça",fora:"Bósnia",kickoff:D(2026,6,18,B(16),0),fase:"grupos"},
+    {id:"fg_11",grupo:"B",rodada:3,casa:"Suíça",fora:"Canadá",kickoff:D(2026,6,24,B(16),0),fase:"grupos"},
+    {id:"fg_12",grupo:"B",rodada:3,casa:"Bósnia",fora:"Catar",kickoff:D(2026,6,24,B(16),0),fase:"grupos"},
+    // GRUPO C
+    {id:"fg_13",grupo:"C",rodada:1,casa:"Brasil",fora:"Marrocos",kickoff:D(2026,6,13,B(19),0),fase:"grupos"},
+    {id:"fg_14",grupo:"C",rodada:1,casa:"Haiti",fora:"Escócia",kickoff:D(2026,6,13,B(22),0),fase:"grupos"},
+    {id:"fg_15",grupo:"C",rodada:2,casa:"Brasil",fora:"Haiti",kickoff:D(2026,6,19,B(22),0),fase:"grupos"},
+    {id:"fg_16",grupo:"C",rodada:2,casa:"Escócia",fora:"Marrocos",kickoff:D(2026,6,19,B(19),0),fase:"grupos"},
+    {id:"fg_17",grupo:"C",rodada:3,casa:"Escócia",fora:"Brasil",kickoff:D(2026,6,24,B(19),0),fase:"grupos"},
+    {id:"fg_18",grupo:"C",rodada:3,casa:"Marrocos",fora:"Haiti",kickoff:D(2026,6,24,B(19),0),fase:"grupos"},
+    // GRUPO D
+    {id:"fg_19",grupo:"D",rodada:1,casa:"EUA",fora:"Paraguai",kickoff:D(2026,6,12,B(22),0),fase:"grupos"},
+    {id:"fg_20",grupo:"D",rodada:1,casa:"Austrália",fora:"Europa C",kickoff:D(2026,6,13,B(1),0),fase:"grupos"},
+    {id:"fg_21",grupo:"D",rodada:2,casa:"EUA",fora:"Austrália",kickoff:D(2026,6,19,B(16),0),fase:"grupos"},
+    {id:"fg_22",grupo:"D",rodada:2,casa:"Europa C",fora:"Paraguai",kickoff:D(2026,6,19,B(1),0),fase:"grupos"},
+    {id:"fg_23",grupo:"D",rodada:3,casa:"Europa C",fora:"EUA",kickoff:D(2026,6,25,B(23),0),fase:"grupos"},
+    {id:"fg_24",grupo:"D",rodada:3,casa:"Paraguai",fora:"Austrália",kickoff:D(2026,6,25,B(23),0),fase:"grupos"},
+    // GRUPO E
+    {id:"fg_25",grupo:"E",rodada:1,casa:"Alemanha",fora:"Curaçao",kickoff:D(2026,6,14,B(14),0),fase:"grupos"},
+    {id:"fg_26",grupo:"E",rodada:1,casa:"Costa do Marfim",fora:"Equador",kickoff:D(2026,6,14,B(20),0),fase:"grupos"},
+    {id:"fg_27",grupo:"E",rodada:2,casa:"Alemanha",fora:"Costa do Marfim",kickoff:D(2026,6,20,B(17),0),fase:"grupos"},
+    {id:"fg_28",grupo:"E",rodada:2,casa:"Equador",fora:"Curaçao",kickoff:D(2026,6,20,B(21),0),fase:"grupos"},
+    {id:"fg_29",grupo:"E",rodada:3,casa:"Equador",fora:"Alemanha",kickoff:D(2026,6,25,B(17),0),fase:"grupos"},
+    {id:"fg_30",grupo:"E",rodada:3,casa:"Curaçao",fora:"Costa do Marfim",kickoff:D(2026,6,25,B(17),0),fase:"grupos"},
+    // GRUPO F
+    {id:"fg_31",grupo:"F",rodada:1,casa:"Holanda",fora:"Japão",kickoff:D(2026,6,14,B(17),0),fase:"grupos"},
+    {id:"fg_32",grupo:"F",rodada:1,casa:"Europa B",fora:"Tunísia",kickoff:D(2026,6,14,B(23),0),fase:"grupos"},
+    {id:"fg_33",grupo:"F",rodada:2,casa:"Holanda",fora:"Europa B",kickoff:D(2026,6,20,B(14),0),fase:"grupos"},
+    {id:"fg_34",grupo:"F",rodada:2,casa:"Tunísia",fora:"Japão",kickoff:D(2026,6,21,B(1),0),fase:"grupos"},
+    {id:"fg_35",grupo:"F",rodada:3,casa:"Tunísia",fora:"Holanda",kickoff:D(2026,6,25,B(20),0),fase:"grupos"},
+    {id:"fg_36",grupo:"F",rodada:3,casa:"Japão",fora:"Europa B",kickoff:D(2026,6,25,B(20),0),fase:"grupos"},
+    // GRUPO G
+    {id:"fg_37",grupo:"G",rodada:1,casa:"Bélgica",fora:"Egito",kickoff:D(2026,6,15,B(16),0),fase:"grupos"},
+    {id:"fg_38",grupo:"G",rodada:1,casa:"Irã",fora:"Nova Zelândia",kickoff:D(2026,6,15,B(22),0),fase:"grupos"},
+    {id:"fg_39",grupo:"G",rodada:2,casa:"Bélgica",fora:"Irã",kickoff:D(2026,6,21,B(16),0),fase:"grupos"},
+    {id:"fg_40",grupo:"G",rodada:2,casa:"Nova Zelândia",fora:"Egito",kickoff:D(2026,6,21,B(22),0),fase:"grupos"},
+    {id:"fg_41",grupo:"G",rodada:3,casa:"Egito",fora:"Irã",kickoff:D(2026,6,27,B(0),0),fase:"grupos"},
+    {id:"fg_42",grupo:"G",rodada:3,casa:"Nova Zelândia",fora:"Bélgica",kickoff:D(2026,6,27,B(0),0),fase:"grupos"},
+    // GRUPO H
+    {id:"fg_43",grupo:"H",rodada:1,casa:"Espanha",fora:"Cabo Verde",kickoff:D(2026,6,15,B(13),0),fase:"grupos"},
+    {id:"fg_44",grupo:"H",rodada:1,casa:"Arábia Saudita",fora:"Uruguai",kickoff:D(2026,6,15,B(19),0),fase:"grupos"},
+    {id:"fg_45",grupo:"H",rodada:2,casa:"Espanha",fora:"Arábia Saudita",kickoff:D(2026,6,21,B(13),0),fase:"grupos"},
+    {id:"fg_46",grupo:"H",rodada:2,casa:"Uruguai",fora:"Cabo Verde",kickoff:D(2026,6,21,B(19),0),fase:"grupos"},
+    {id:"fg_47",grupo:"H",rodada:3,casa:"Cabo Verde",fora:"Arábia Saudita",kickoff:D(2026,6,26,B(21),0),fase:"grupos"},
+    {id:"fg_48",grupo:"H",rodada:3,casa:"Uruguai",fora:"Espanha",kickoff:D(2026,6,26,B(21),0),fase:"grupos"},
+    // GRUPO I
+    {id:"fg_49",grupo:"I",rodada:1,casa:"França",fora:"Senegal",kickoff:D(2026,6,16,B(16),0),fase:"grupos"},
+    {id:"fg_50",grupo:"I",rodada:1,casa:"Repescagem I",fora:"Noruega",kickoff:D(2026,6,16,B(19),0),fase:"grupos"},
+    {id:"fg_51",grupo:"I",rodada:2,casa:"França",fora:"Repescagem I",kickoff:D(2026,6,22,B(18),0),fase:"grupos"},
+    {id:"fg_52",grupo:"I",rodada:2,casa:"Noruega",fora:"Senegal",kickoff:D(2026,6,22,B(21),0),fase:"grupos"},
+    {id:"fg_53",grupo:"I",rodada:3,casa:"Noruega",fora:"França",kickoff:D(2026,6,26,B(16),0),fase:"grupos"},
+    {id:"fg_54",grupo:"I",rodada:3,casa:"Senegal",fora:"Repescagem I",kickoff:D(2026,6,26,B(16),0),fase:"grupos"},
+    // GRUPO J
+    {id:"fg_55",grupo:"J",rodada:1,casa:"Argentina",fora:"Argélia",kickoff:D(2026,6,16,B(14),0),fase:"grupos"},
+    {id:"fg_56",grupo:"J",rodada:1,casa:"Áustria",fora:"Jordânia",kickoff:D(2026,6,17,B(1),0),fase:"grupos"},
+    {id:"fg_57",grupo:"J",rodada:2,casa:"Argentina",fora:"Áustria",kickoff:D(2026,6,22,B(14),0),fase:"grupos"},
+    {id:"fg_58",grupo:"J",rodada:2,casa:"Jordânia",fora:"Argélia",kickoff:D(2026,6,23,B(0),0),fase:"grupos"},
+    {id:"fg_59",grupo:"J",rodada:3,casa:"Argélia",fora:"Áustria",kickoff:D(2026,6,27,B(23),0),fase:"grupos"},
+    {id:"fg_60",grupo:"J",rodada:3,casa:"Jordânia",fora:"Argentina",kickoff:D(2026,6,27,B(23),0),fase:"grupos"},
+    // GRUPO K
+    {id:"fg_61",grupo:"K",rodada:1,casa:"Portugal",fora:"Repescagem K",kickoff:D(2026,6,17,B(14),0),fase:"grupos"},
+    {id:"fg_62",grupo:"K",rodada:1,casa:"Uzbequistão",fora:"Colômbia",kickoff:D(2026,6,17,B(23),0),fase:"grupos"},
+    {id:"fg_63",grupo:"K",rodada:2,casa:"Portugal",fora:"Uzbequistão",kickoff:D(2026,6,23,B(14),0),fase:"grupos"},
+    {id:"fg_64",grupo:"K",rodada:2,casa:"Colômbia",fora:"Repescagem K",kickoff:D(2026,6,23,B(23),0),fase:"grupos"},
+    {id:"fg_65",grupo:"K",rodada:3,casa:"Colômbia",fora:"Portugal",kickoff:D(2026,6,27,B(20),30),fase:"grupos"},
+    {id:"fg_66",grupo:"K",rodada:3,casa:"Repescagem K",fora:"Uzbequistão",kickoff:D(2026,6,27,B(20),30),fase:"grupos"},
+    // GRUPO L
+    {id:"fg_67",grupo:"L",rodada:1,casa:"Inglaterra",fora:"Croácia",kickoff:D(2026,6,17,B(17),0),fase:"grupos"},
+    {id:"fg_68",grupo:"L",rodada:1,casa:"Gana",fora:"Panamá",kickoff:D(2026,6,17,B(20),0),fase:"grupos"},
+    {id:"fg_69",grupo:"L",rodada:2,casa:"Inglaterra",fora:"Gana",kickoff:D(2026,6,23,B(17),0),fase:"grupos"},
+    {id:"fg_70",grupo:"L",rodada:2,casa:"Panamá",fora:"Croácia",kickoff:D(2026,6,23,B(20),0),fase:"grupos"},
+    {id:"fg_71",grupo:"L",rodada:3,casa:"Panamá",fora:"Inglaterra",kickoff:D(2026,6,27,B(18),0),fase:"grupos"},
+    {id:"fg_72",grupo:"L",rodada:3,casa:"Croácia",fora:"Gana",kickoff:D(2026,6,27,B(18),0),fase:"grupos"},
+  ];
+};
+const JOGOS_FG = buildFG();
+const JOGOS_MM = [
+  {id:"o1",fase:"oitavas",label:"Oitavas 1",casa:"1º A",fora:"2º B",kickoff:D(2026,7,3,17,0)},
+  {id:"o2",fase:"oitavas",label:"Oitavas 2",casa:"1º C",fora:"2º D",kickoff:D(2026,7,3,21,0)},
+  {id:"o3",fase:"oitavas",label:"Oitavas 3",casa:"1º E",fora:"2º F",kickoff:D(2026,7,4,17,0)},
+  {id:"o4",fase:"oitavas",label:"Oitavas 4",casa:"1º G",fora:"2º H",kickoff:D(2026,7,4,21,0)},
+  {id:"o5",fase:"oitavas",label:"Oitavas 5",casa:"1º B",fora:"2º A",kickoff:D(2026,7,5,17,0)},
+  {id:"o6",fase:"oitavas",label:"Oitavas 6",casa:"1º D",fora:"2º C",kickoff:D(2026,7,5,21,0)},
+  {id:"o7",fase:"oitavas",label:"Oitavas 7",casa:"1º F",fora:"2º E",kickoff:D(2026,7,6,17,0)},
+  {id:"o8",fase:"oitavas",label:"Oitavas 8",casa:"1º H",fora:"2º G",kickoff:D(2026,7,6,21,0)},
+  {id:"o9",fase:"oitavas",label:"Oitavas 9",casa:"1º I",fora:"2º J",kickoff:D(2026,7,7,17,0)},
+  {id:"o10",fase:"oitavas",label:"Oitavas 10",casa:"1º K",fora:"2º L",kickoff:D(2026,7,7,21,0)},
+  {id:"o11",fase:"oitavas",label:"Oitavas 11",casa:"1º J",fora:"2º I",kickoff:D(2026,7,8,17,0)},
+  {id:"o12",fase:"oitavas",label:"Oitavas 12",casa:"1º L",fora:"2º K",kickoff:D(2026,7,8,21,0)},
+  {id:"o13",fase:"oitavas",label:"Oitavas 13",casa:"3º A/B/C",fora:"3º D/E/F",kickoff:D(2026,7,9,17,0)},
+  {id:"o14",fase:"oitavas",label:"Oitavas 14",casa:"3º G/H/I",fora:"3º J/K/L",kickoff:D(2026,7,9,21,0)},
+  {id:"o15",fase:"oitavas",label:"Oitavas 15",casa:"A definir",fora:"A definir",kickoff:D(2026,7,10,17,0)},
+  {id:"o16",fase:"oitavas",label:"Oitavas 16",casa:"A definir",fora:"A definir",kickoff:D(2026,7,10,21,0)},
+  {id:"q1",fase:"quartas",label:"Quartas 1",casa:"Venc. O1",fora:"Venc. O2",kickoff:D(2026,7,14,17,0)},
+  {id:"q2",fase:"quartas",label:"Quartas 2",casa:"Venc. O3",fora:"Venc. O4",kickoff:D(2026,7,14,21,0)},
+  {id:"q3",fase:"quartas",label:"Quartas 3",casa:"Venc. O5",fora:"Venc. O6",kickoff:D(2026,7,15,17,0)},
+  {id:"q4",fase:"quartas",label:"Quartas 4",casa:"Venc. O7",fora:"Venc. O8",kickoff:D(2026,7,15,21,0)},
+  {id:"q5",fase:"quartas",label:"Quartas 5",casa:"Venc. O9",fora:"Venc. O10",kickoff:D(2026,7,16,17,0)},
+  {id:"q6",fase:"quartas",label:"Quartas 6",casa:"Venc. O11",fora:"Venc. O12",kickoff:D(2026,7,16,21,0)},
+  {id:"q7",fase:"quartas",label:"Quartas 7",casa:"Venc. O13",fora:"Venc. O14",kickoff:D(2026,7,17,17,0)},
+  {id:"q8",fase:"quartas",label:"Quartas 8",casa:"Venc. O15",fora:"Venc. O16",kickoff:D(2026,7,17,21,0)},
+  {id:"s1",fase:"semifinais",label:"Semi 1",casa:"Venc. Q1",fora:"Venc. Q2",kickoff:D(2026,7,21,21,0)},
+  {id:"s2",fase:"semifinais",label:"Semi 2",casa:"Venc. Q3",fora:"Venc. Q4",kickoff:D(2026,7,22,21,0)},
+  {id:"s3",fase:"semifinais",label:"Semi 3",casa:"Venc. Q5",fora:"Venc. Q6",kickoff:D(2026,7,23,21,0)},
+  {id:"s4",fase:"semifinais",label:"Semi 4",casa:"Venc. Q7",fora:"Venc. Q8",kickoff:D(2026,7,24,21,0)},
+  {id:"t1",fase:"terceiro",label:"3º Lugar",casa:"Perd. S1/S2",fora:"Perd. S3/S4",kickoff:D(2026,7,26,17,0)},
+  {id:"f1",fase:"final",label:"🏆 FINAL",casa:"Venc. S1/S2",fora:"Venc. S3/S4",kickoff:D(2026,7,28,20,0)},
+];
+const TODOS_JOGOS = [...JOGOS_FG, ...JOGOS_MM];
+const JOGOS_AMISTOSOS = [
+  {id:"am_1",fase:"amistoso",label:"Amistoso",grupo:"AM",rodada:1,casa:"Haiti",fora:"Peru",kickoff:D(2026,6,5,24,0)},
+  {id:"am_2",fase:"amistoso",label:"Amistoso",grupo:"AM",rodada:1,casa:"Canadá",fora:"Irlanda",kickoff:D(2026,6,5,23,30)},
+  {id:"am_3",fase:"amistoso",label:"Amistoso",grupo:"AM",rodada:1,casa:"Mianmar",fora:"Guam",kickoff:D(2026,6,6,11,30)},
+  {id:"am_4",fase:"amistoso",label:"Amistoso",grupo:"AM",rodada:1,casa:"Bélgica",fora:"Tunísia",kickoff:D(2026,6,6,13,0)},
+  {id:"am_5",fase:"amistoso",label:"Amistoso",grupo:"AM",rodada:1,casa:"Portugal",fora:"Chile",kickoff:D(2026,6,6,17,45)},
+];
+const TODOS_JOGOS_AMISTOSOS = [...JOGOS_AMISTOSOS];
+const PERGUNTAS = [
+  {id:"p1",txt:"Quem será o campeão da Copa 2026?",opcoes:["Brasil","Argentina","França","Inglaterra","Espanha","Alemanha","Portugal","Holanda","Itália","EUA","Outra seleção"]},
+  {id:"p2",txt:"Quem será o artilheiro da Copa 2026?",opcoes:["Vini Jr.","Mbappé","Bellingham","Pedri","Saka","Pulisic","Musiala","Rodri","Outro jogador"]},
+  {id:"p3",txt:"Qual seleção fará mais gols no torneio?",opcoes:["Brasil","Argentina","França","Espanha","Inglaterra","Alemanha","Portugal","Holanda","EUA","Outra seleção"]},
+  {id:"p4",txt:"Quem ganhará a Bola de Ouro da Copa?",opcoes:["Vini Jr.","Mbappé","Bellingham","Pedri","Saka","Musiala","Pulisic","Outro jogador"]},
+  {id:"p5",txt:"Qual será a maior goleada do torneio?",opcoes:["4-0 ou menos","5-0","6-0","7-0","8-0 ou mais"]},
+  {id:"p6",txt:"O Brasil chegará às semifinais?",opcoes:["Sim, e será campeão!","Sim, mas cai nas semis","Sim, mas cai nas quartas","Não, cai nas oitavas","Não, cai na fase de grupos"]},
+];
+const DEADLINE_COPA = D(2026,6,18,12,0);
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// FIREBASE HOOKS & DATA ACCESS
+// ════════════════════════════════════════════════════════════════════════════
+
+// Auth: register
+const fbRegister = async (email, password, apelido) => {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(cred.user, { displayName: apelido });
+  await setDoc(doc(db,"users",cred.user.uid), {
+    uid: cred.user.uid, email, apelido, createdAt: serverTimestamp()
+  });
+  return cred.user;
+};
+
+// Auth: login
+const fbLogin = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+
+// Auth: logout
+const fbLogout = () => signOut(auth);
+
+// Create group
+const fbCreateGroup = async (nome, user, finCfg, tipo="copa") => {
+  const code = code6();
+  const groupRef = doc(collection(db,"groups"));
+  await setDoc(groupRef, {
+    id: groupRef.id, nome, code, ownerId: user.uid,
+    ownerApelido: user.displayName,
+    members: [{userId:user.uid, apelido:user.displayName, joinedAt:Date.now(), isOwner:true}],
+    createdAt: serverTimestamp(),
+    financeConfig: finCfg || null,
+    tipo: tipo,
+  });
+  return { id: groupRef.id, code };
+};
+
+// Join group by code
+const fbJoinGroup = async (code, user) => {
+  const q = query(collection(db,"groups"), where("code","==",code.toUpperCase().trim()));
+  const snap = await getDocs(q);
+  if (snap.empty) throw new Error("Código de convite inválido.");
+  const gDoc = snap.docs[0];
+  const group = gDoc.data();
+  if (group.members.some(m => m.userId === user.uid)) throw new Error("Você já participa deste bolão.");
+  await updateDoc(gDoc.ref, {
+    members: arrayUnion({userId:user.uid, apelido:user.displayName, joinedAt:Date.now(), isOwner:false})
+  });
+  return { id: gDoc.id, ...group };
+};
+
+// Delete group (owner only)
+const fbDeleteGroup = async (groupId) => {
+  await deleteDoc(doc(db,"groups",groupId));
+};
+
+// Listen to user groups
+const useUserGroups = (uid) => {
+  const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!uid) return;
+    const q = query(collection(db,"groups"), where("members","array-contains",{userId:uid,apelido:"",joinedAt:0,isOwner:false}));
+    // Firestore array-contains doesn't support partial objects — use a simpler approach:
+    // listen to ALL groups and filter client-side (works for small groups)
+    const unsub = onSnapshot(collection(db,"groups"), snap => {
+      const all = snap.docs.map(d => ({id:d.id,...d.data()}));
+      setGroups(all.filter(g => g.members?.some(m => m.userId === uid)));
+      setLoading(false);
+    });
+    return unsub;
+  }, [uid]);
+  return { groups, loading };
+};
+
+// Listen to single group
+const useGroup = (groupId) => {
+  const [group, setGroup] = useState(null);
+  useEffect(() => {
+    if (!groupId) return;
+    const unsub = onSnapshot(doc(db,"groups",groupId), snap => {
+      if (snap.exists()) setGroup({id:snap.id,...snap.data()});
+    });
+    return unsub;
+  }, [groupId]);
+  return group;
+};
+
+// Save palpite to Firestore
+const fbSavePalpite = async (userId, groupId, jogoId, casa, fora) => {
+  const id = `${userId}_${groupId}_${jogoId}`;
+  await setDoc(doc(db,"palpites",id), {
+    userId, groupId, jogoId, casa:Number(casa), fora:Number(fora),
+    savedAt: serverTimestamp()
+  });
+};
+
+// Listen to all palpites for a group
+const useGroupPalpites = (groupId) => {
+  const [palpites, setPalpites] = useState([]);
+  useEffect(() => {
+    if (!groupId) return;
+    const q = query(collection(db,"palpites"), where("groupId","==",groupId));
+    const unsub = onSnapshot(q, snap => {
+      setPalpites(snap.docs.map(d => d.data()));
+    });
+    return unsub;
+  }, [groupId]);
+  return palpites;
+};
+
+// Listen to results for a group
+const useGroupResults = (groupId) => {
+  const [results, setResults] = useState({});
+  useEffect(() => {
+    if (!groupId) return;
+    const unsub = onSnapshot(doc(db,"results",groupId), snap => {
+      setResults(snap.exists() ? snap.data() : {});
+    });
+    return unsub;
+  }, [groupId]);
+  return results;
+};
+
+// Save result (admin)
+const fbSetResult = async (groupId, jogoId, casa, fora, status="final") => {
+  const ref = doc(db,"results",groupId);
+  await setDoc(ref, {
+    [jogoId]: {casa:Number(casa), fora:Number(fora), status, updatedAt:Date.now()}
+  }, {merge:true});
+};
+const fbDeleteResult = async (groupId, jogoId) => {
+  const ref = doc(db,"results",groupId);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
+  const data = snap.data();
+  delete data[jogoId];
+  await setDoc(ref, data);
+};
+
+// Especiais
+const fbSaveEspecial = async (userId, groupId, pergId, resposta) => {
+  const id = `${userId}_${groupId}_${pergId}`;
+  await setDoc(doc(db,"especiais",id), {userId,groupId,pergId,resposta,savedAt:serverTimestamp()});
+};
+const useGroupEspeciais = (groupId) => {
+  const [especiais, setEspeciais] = useState([]);
+  useEffect(() => {
+    if (!groupId) return;
+    const q = query(collection(db,"especiais"), where("groupId","==",groupId));
+    const unsub = onSnapshot(q, snap => setEspeciais(snap.docs.map(d=>d.data())));
+    return unsub;
+  }, [groupId]);
+  return especiais;
+};
+
+// Gabarito especiais
+const fbSetGabarito = async (groupId, pergId, resposta) => {
+  await setDoc(doc(db,"gabaritos",groupId), {[pergId]:resposta}, {merge:true});
+};
+const useGabarito = (groupId) => {
+  const [gab, setGab] = useState({});
+  useEffect(() => {
+    if (!groupId) return;
+    const unsub = onSnapshot(doc(db,"gabaritos",groupId), snap => setGab(snap.exists()?snap.data():{}));
+    return unsub;
+  }, [groupId]);
+  return gab;
+};
+
+// Finance
+const fbSetFinanceConfig = async (groupId, cfg) => {
+  await updateDoc(doc(db,"groups",groupId), {financeConfig: cfg});
+};
+const fbSetPayment = async (groupId, userId, pago, obs="") => {
+  await setDoc(doc(db,"payments",groupId), {
+    [userId]: {pago, obs, updatedAt:Date.now(), paidAt: pago?Date.now():null}
+  }, {merge:true});
+};
+const usePayments = (groupId) => {
+  const [payments, setPayments] = useState({});
+  useEffect(() => {
+    if (!groupId) return;
+    const unsub = onSnapshot(doc(db,"payments",groupId), snap => setPayments(snap.exists()?snap.data():{}));
+    return unsub;
+  }, [groupId]);
+  return payments;
+};
+const fbConfirmWinners = async (groupId, winners) => {
+  await setDoc(doc(db,"prizes",groupId), {confirmed:true, winners, confirmedAt:Date.now()});
+};
+const usePrizeResult = (groupId) => {
+  const [prize, setPrize] = useState(null);
+  useEffect(() => {
+    if (!groupId) return;
+    const unsub = onSnapshot(doc(db,"prizes",groupId), snap => setPrize(snap.exists()?snap.data():null));
+    return unsub;
+  }, [groupId]);
+  return prize;
+};
+
+// Compute total pts for a user
+const computeTotalPts = (userId, palpites, results, especiais, gabarito) => {
+  let pts = 0;
+  TODOS_JOGOS.forEach(j => {
+    const p = palpites.find(pp => pp.userId===userId && pp.jogoId===j.id);
+    const r = results[j.id];
+    if (p && r) pts += calcPts(p,r) || 0;
+  });
+  PERGUNTAS.forEach(p => {
+    const e = especiais.find(ee => ee.userId===userId && ee.pergId===p.id);
+    if (e && gabarito[p.id] && e.resposta===gabarito[p.id]) pts += 20;
+  });
+  return pts;
+};
+
+const calcFundo = (group, payments) => {
+  const cfg = group?.financeConfig;
+  if (!cfg) return 0;
+  const pagantes = Object.values(payments).filter(p=>p.pago).length;
+  return pagantes * (cfg.taxaEntrada||0);
+};
+const calcPremiosArr = (group, fundo) => {
+  const cfg = group?.financeConfig;
+  if (!cfg?.distribuicao) return [];
+  return cfg.distribuicao.map((d,i) => ({
+    pos:i+1, pct:d.pct, valor:Math.round(fundo*d.pct/100*100)/100
+  }));
+};
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// SMALL COMPONENTS
+// ════════════════════════════════════════════════════════════════════════════
+const Toast = ({msg}) => React.createElement("div",{className:"toast"},msg);
+
+const Spinner = ({size=24,color="#fff"}) => React.createElement("div",{
+  style:{width:size,height:size,border:`3px solid rgba(255,255,255,.3)`,borderTopColor:color,borderRadius:"50%",animation:"spin 1s linear infinite",display:"inline-block"}
+});
+
+function Modal({title,onClose,children}){
+  return React.createElement("div",{className:"mo-bg",onClick:e=>e.target===e.currentTarget&&onClose()},
+    React.createElement("div",{className:"mo"},
+      React.createElement("div",{className:"mo-h"},
+        React.createElement("div",{className:"mo-t"},title),
+        React.createElement("button",{className:"mo-x",onClick:onClose},"✕")
+      ),
+      children
+    )
+  );
+}
+
+function FInput({label,error,...p}){
+  return React.createElement("div",{className:"fg"},
+    label && React.createElement("label",{className:"fl"},label),
+    React.createElement("input",{className:"fi",...p}),
+    error && React.createElement("div",{style:{color:"#c53030",fontSize:12,marginTop:4}},error)
+  );
+}
+
+function Header({user,onLogout}){
+  return React.createElement("div",{className:"hd"},
+    React.createElement("div",{className:"logo"},
+      React.createElement("span",null,"⚽"),
+      React.createElement("div",null,
+        React.createElement("div",{style:{fontSize:18}},"BOLÃO"),
+        React.createElement("span",{className:"logo-sub"},"COPA 2026")
+      )
+    ),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
+      React.createElement("div",{className:"av-sm"},user.displayName?.[0]?.toUpperCase()||"?"),
+      React.createElement("button",{className:"btn-sair",onClick:onLogout},"Sair")
+    )
+  );
+}
+
+function CopaBanner(){
+  const [now,setNow] = useState(Date.now());
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+  const start=D(2026,6,12,17,0),diff=Math.max(0,start-now);
+  if(diff<=0) return React.createElement("div",{style:{background:"var(--vd)",borderRadius:"var(--rs)",padding:"12px 14px",marginBottom:16,textAlign:"center"}},
+    React.createElement("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"var(--am)",letterSpacing:1}},"🏆 A COPA DO MUNDO COMEÇOU!")
+  );
+  const dias=Math.floor(diff/86400000),horas=Math.floor((diff%86400000)/3600000),mins=Math.floor((diff%3600000)/60000),segs=Math.floor((diff%60000)/1000);
+  return React.createElement("div",{className:"countdown-banner"},
+    React.createElement("span",{style:{fontSize:24}},"⏳"),
+    React.createElement("div",{style:{flex:1}},
+      React.createElement("div",{style:{fontSize:11,color:"rgba(255,255,255,.6)",fontWeight:700,letterSpacing:1,marginBottom:4}},"COPA 2026 COMEÇA EM"),
+      React.createElement("div",{style:{display:"flex",gap:10,alignItems:"flex-end"}},
+        [[dias,"DIAS"],[horas,"H"],[mins,"MIN"],[segs,"SEG"]].map(([n,l])=>
+          React.createElement("div",{key:l,style:{textAlign:"center"}},
+            React.createElement("div",{className:"count-num"},String(n).padStart(2,"0")),
+            React.createElement("div",{className:"count-label"},l)
+          )
+        )
+      )
+    )
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// AUTH SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function AuthScreen({onLogin}){
+  const [tab,setTab]=useState("login");
+  const [form,setForm]=useState({email:"",password:"",apelido:"",conf:""});
+  const [errs,setErrs]=useState({});
+  const [fb,setFb]=useState(null);
+  const [busy,setBusy]=useState(false);
+  const set=(k,v)=>{setForm(f=>({...f,[k]:v}));setErrs(e=>({...e,[k]:""}));setFb(null)};
+
+  const validate=()=>{
+    const e={};
+    if(!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))e.email="E-mail inválido";
+    if(form.password.length<6)e.password="Mínimo 6 caracteres";
+    if(tab==="reg"){
+      if(!form.apelido.trim()||form.apelido.length<2)e.apelido="Apelido muito curto";
+      if(form.password!==form.conf)e.conf="Senhas não coincidem";
+    }
+    setErrs(e);return!Object.keys(e).length;
+  };
+
+  const submit=async()=>{
+    if(!validate())return;
+    setBusy(true);setFb(null);
+    try{
+      if(tab==="login"){
+        const cred=await fbLogin(form.email,form.password);
+        onLogin(cred.user);
+      } else {
+        const user=await fbRegister(form.email,form.password,form.apelido.trim());
+        onLogin(user);
+      }
+    } catch(err){
+      const msgs={
+        "auth/email-already-in-use":"E-mail já cadastrado.",
+        "auth/invalid-credential":"E-mail ou senha incorretos.",
+        "auth/user-not-found":"E-mail não encontrado.",
+        "auth/wrong-password":"Senha incorreta.",
+        "auth/weak-password":"Senha muito fraca (mínimo 6 caracteres).",
+        "auth/too-many-requests":"Muitas tentativas. Aguarde alguns minutos.",
+      };
+      setFb(msgs[err.code]||err.message||"Erro desconhecido.");
+    }
+    setBusy(false);
+  };
+
+  const e=React.createElement;
+  return e("div",{style:{display:"flex",flexDirection:"column",minHeight:"100vh"}},
+    e("div",{className:"hero"},
+      e("span",{className:"hero-emoji"},"🏆"),
+      e("div",{className:"hero-badge"},"COPA DO MUNDO 2026"),
+      e("div",{className:"hero-title"},e("span",null,"BOLÃO"),e("br"),e("em",null,"BRASIL")),
+      e("div",{className:"hero-sub"},"Dispute com seus amigos e torça pelo hexa!")
+    ),
+    e("div",{className:"auth-card"},
+      e("div",{className:"tabs"},
+        e("button",{className:`tab${tab==="login"?" on":""}`,onClick:()=>{setTab("login");setFb(null);setErrs({})}},"ENTRAR"),
+        e("button",{className:`tab${tab==="reg"?" on":""}`,onClick:()=>{setTab("reg");setFb(null);setErrs({})}},"CADASTRAR")
+      ),
+      tab==="reg"&&e(FInput,{label:"Apelido",type:"text",placeholder:"Como quer ser chamado?",value:form.apelido,onChange:ev=>set("apelido",ev.target.value),error:errs.apelido,maxLength:20,autoFocus:true}),
+      e(FInput,{label:"E-mail",type:"email",placeholder:"seu@email.com",value:form.email,onChange:ev=>set("email",ev.target.value),error:errs.email,autoFocus:tab==="login"}),
+      e(FInput,{label:"Senha",type:"password",placeholder:tab==="login"?"Sua senha":"Mínimo 6 caracteres",value:form.password,onChange:ev=>set("password",ev.target.value),error:errs.password,onKeyDown:ev=>ev.key==="Enter"&&submit()}),
+      tab==="reg"&&e(FInput,{label:"Confirmar senha",type:"password",placeholder:"Repita a senha",value:form.conf,onChange:ev=>set("conf",ev.target.value),error:errs.conf,onKeyDown:ev=>ev.key==="Enter"&&submit()}),
+      fb&&e("div",{className:"err-box"},fb),
+      e("button",{className:"btn-p",onClick:submit,disabled:busy},
+        busy?e(Spinner,{size:20}):tab==="login"?"ENTRAR":"CRIAR CONTA"
+      )
+    )
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// CREATE GROUP MODAL
+// ════════════════════════════════════════════════════════════════════════════
+function CreateGroupModal({user,onClose,onDone}){
+  const [step,setStep]=useState(1);
+  const [nome,setNome]=useState("");
+  const [err,setErr]=useState("");
+  const [busy,setBusy]=useState(false);
+  const [created,setCreated]=useState(null);
+  const [useFin,setUseFin]=useState(false);
+  const [tipo,setTipo]=useState("copa");
+  const [taxa,setTaxa]=useState("");
+  const [prazo,setPrazo]=useState("");
+  const [dist,setDist]=useState([
+    {pos:1,label:"1º Lugar",pct:70},
+    {pos:2,label:"2º Lugar",pct:20},
+    {pos:3,label:"3º Lugar",pct:10},
+  ]);
+  const totalPct=dist.reduce((a,d)=>a+Number(d.pct||0),0);
+  const pctOk=totalPct===100;
+
+  const goCreate=async()=>{
+    if(!nome.trim()||nome.trim().length<2){setErr("Nome deve ter pelo menos 2 letras.");return;}
+    if(useFin){
+      if(!taxa||isNaN(+taxa)||+taxa<=0){setErr("Informe um valor de entrada válido.");return;}
+      if(!pctOk){setErr(`Soma dos percentuais deve ser 100% (atual: ${totalPct}%).`);return;}
+    }
+    setBusy(true);
+    try{
+      const finCfg=useFin?{taxaEntrada:+taxa,prazoPagamento:prazo,distribuicao:dist.map(d=>({pos:d.pos,label:d.label,pct:Number(d.pct)}))}:null;
+      const {id,code}=await fbCreateGroup(nome.trim(),user,finCfg,tipo);
+      setCreated({id,code,nome:nome.trim(),tipo});
+    }catch(e){setErr(e.message);}
+    setBusy(false);
+  };
+
+  const e=React.createElement;
+  const POS_IC=["🥇","🥈","🥉","4️⃣","5️⃣"];
+  const POS_C=["pos-1","pos-2","pos-3","pos-n","pos-n"];
+
+  if(created) return e(Modal,{title:"🏆 BOLÃO CRIADO!",onClose},
+    e("div",{style:{textAlign:"center"}},
+      e("div",{style:{fontSize:44,marginBottom:10}},"🎉"),
+      e("h3",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:22,fontWeight:700,marginBottom:4}},created.nome),
+      e("p",{style:{fontSize:14,color:"#666",marginBottom:18}},"Compartilhe o código com seus amigos:"),
+      e("div",{style:{background:"#f0f9f4",border:"2px dashed var(--vd)",borderRadius:12,padding:"18px 16px",marginBottom:18}},
+        e("div",{style:{fontSize:11,color:"var(--vd)",fontWeight:700,letterSpacing:2,marginBottom:6}},"CÓDIGO DE CONVITE"),
+        e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:44,color:"var(--vd)",letterSpacing:8}},created.code)
+      ),
+      e("button",{className:"btn-am",onClick:()=>{navigator.clipboard?.writeText(created.code);onDone();}},"COPIAR CÓDIGO E CONTINUAR")
+    )
+  );
+
+  return e(Modal,{title:"➕ CRIAR BOLÃO",onClose},
+    e(FInput,{label:"Nome do bolão",type:"text",placeholder:'Ex: "Galera do Trabalho"',value:nome,onChange:ev=>{setNome(ev.target.value);setErr("")},maxLength:40,autoFocus:true,onKeyDown:ev=>ev.key==="Enter"&&!useFin&&goCreate()}),
+
+    e("div",{style:{marginBottom:16}},
+      e("div",{style:{fontSize:12,fontWeight:700,color:"#555",marginBottom:8}},"TIPO DE BOLÃO"),
+      e("div",{style:{display:"flex",gap:8}},
+        e("button",{style:{flex:1,padding:"10px 8px",borderRadius:8,border:`2px solid ${tipo==="copa"?"var(--vd)":"#ddd"}`,background:tipo==="copa"?"#f0f9f4":"#fff",fontWeight:700,fontSize:13,cursor:"pointer",color:tipo==="copa"?"var(--vd)":"#666"},onClick:()=>setTipo("copa")},"⚽ Copa 2026"),
+        e("button",{style:{flex:1,padding:"10px 8px",borderRadius:8,border:`2px solid ${tipo==="amistosos"?"var(--az)":"#ddd"}`,background:tipo==="amistosos"?"#e3f2fd":"#fff",fontWeight:700,fontSize:13,cursor:"pointer",color:tipo==="amistosos"?"var(--az)":"#666"},onClick:()=>setTipo("amistosos")},"🏟️ Amistosos")
+      )
+    ),
+
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"12px 14px",background:"#f0f9f4",borderRadius:10,border:"1px solid #c8e6c9",cursor:"pointer"},onClick:()=>setUseFin(f=>!f)},
+      e("div",{style:{width:36,height:20,borderRadius:10,background:useFin?"var(--vd)":"#ddd",position:"relative",transition:"background .2s",flexShrink:0}},
+        e("div",{style:{position:"absolute",top:2,left:useFin?18:2,width:16,height:16,borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 3px rgba(0,0,0,.3)"}})
+      ),
+      e("div",null,
+        e("div",{style:{fontWeight:700,fontSize:14}},"💰 Ativar área financeira"),
+        e("div",{style:{fontSize:12,color:"#888"}},"Controle de pagamentos e fundo de prêmios")
+      )
+    ),
+
+    useFin&&e("div",null,
+      e("label",{className:"cfg-label"},"Valor da taxa de entrada (R$)"),
+      e("input",{className:"cfg-input",type:"number",min:"1",step:"0.01",placeholder:"Ex: 20.00",value:taxa,onChange:ev=>setTaxa(ev.target.value)}),
+      e("label",{className:"cfg-label"},"Prazo para pagamento"),
+      e("input",{className:"cfg-input",type:"date",value:prazo,onChange:ev=>setPrazo(ev.target.value)}),
+      e("div",{style:{marginBottom:8,display:"flex",alignItems:"center",gap:6}},
+        e("label",{className:"cfg-label",style:{marginBottom:0}},"Distribuição do prêmio"),
+        e("span",{className:pctOk?"pct-ok":"pct-err"},(totalPct+"% "+(pctOk?"✓":"(faltam "+(100-totalPct)+"%)")))
+      ),
+      dist.map((d,i)=>e("div",{key:i,className:"dist-row"},
+        e("div",{className:`dist-pos ${POS_C[Math.min(i,4)]}`},POS_IC[Math.min(i,4)]),
+        e("span",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:14,width:60,flexShrink:0}},d.label),
+        e("input",{className:"dist-input",type:"number",min:0,max:100,value:d.pct,onChange:ev=>setDist(dd=>dd.map((x,idx)=>idx===i?{...x,pct:Number(ev.target.value)}:x)),style:{width:70}}),
+        e("span",{style:{fontSize:14,color:"#999"}},"%"),
+        dist.length>1&&e("button",{onClick:()=>setDist(dd=>dd.filter((_,idx)=>idx!==i)),style:{background:"none",border:"none",cursor:"pointer",color:"#c62828",fontSize:18,padding:"0 4px"}},"✕")
+      )),
+      dist.length<5&&e("button",{onClick:()=>setDist(dd=>[...dd,{pos:dd.length+1,label:`${dd.length+1}º Lugar`,pct:0}]),style:{fontSize:13,color:"var(--vd)",background:"none",border:"1px dashed var(--vd)",borderRadius:8,padding:"6px 14px",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,marginBottom:8}},
+        "+ Adicionar colocação"
+      )
+    ),
+
+    err&&e("div",{className:"err-box"},err),
+    e("button",{className:"btn-p",onClick:goCreate,disabled:busy},busy?e(Spinner,{size:20}):"CRIAR BOLÃO")
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// JOIN GROUP MODAL
+// ════════════════════════════════════════════════════════════════════════════
+function JoinGroupModal({user,onClose,onDone}){
+  const [code,setCode]=useState("");
+  const [fb,setFb]=useState(null);
+  const [busy,setBusy]=useState(false);
+  const go=async()=>{
+    setBusy(true);setFb(null);
+    try{
+      const g=await fbJoinGroup(code,user);
+      setFb({t:"ok",m:`Entrou em "${g.nome}"!`});
+      setTimeout(()=>onDone(),900);
+    }catch(e){setFb({t:"err",m:e.message});}
+    setBusy(false);
+  };
+  const e=React.createElement;
+  return e(Modal,{title:"🔑 ENTRAR EM BOLÃO",onClose},
+    e(FInput,{label:"Código de convite",type:"text",placeholder:"Ex: AB3XK7",value:code,onChange:ev=>setCode(ev.target.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,6)),style:{textTransform:"uppercase",fontSize:24,letterSpacing:6,textAlign:"center",fontFamily:"'Bebas Neue',sans-serif"},autoFocus:true,maxLength:6,onKeyDown:ev=>ev.key==="Enter"&&go()}),
+    fb&&e("div",{className:fb.t==="err"?"err-box":"ok-box"},fb.m),
+    e("button",{className:"btn-p",onClick:go,disabled:busy||code.length<6},busy?e(Spinner,{size:20}):"ENTRAR NO BOLÃO")
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// JOGO CARD
+// ════════════════════════════════════════════════════════════════════════════
+function JogoCard({jogo,user,groupId,palpites,results,now}){
+  const deadline=jogo.kickoff-30*60*1000;
+  const aberto=now<deadline;
+  const breve=!aberto&&now<jogo.kickoff;
+  const resultado=results[jogo.id]||null;
+  const isLive=resultado?.status==="live";
+  const isFinal=resultado?.status==="final";
+  const myPalpite=palpites.find(p=>p.userId===user.uid&&p.jogoId===jogo.id);
+  const [ca,setCa]=useState(myPalpite?String(myPalpite.casa):"");
+  const [fo,setFo]=useState(myPalpite?String(myPalpite.fora):"");
+  const [saved,setSaved]=useState(!!myPalpite);
+  const [busy,setBusy]=useState(false);
+
+  // Sync if external palpite comes in
+  useEffect(()=>{
+    if(myPalpite){setCa(String(myPalpite.casa));setFo(String(myPalpite.fora));setSaved(true);}
+  },[myPalpite?.savedAt]);
+
+  const pts=(resultado&&saved&&ca!==""&&fo!=="")? calcPts({casa:+ca,fora:+fo},resultado):null;
+
+  const save=async()=>{
+    if(ca.length<1||fo.length<1||isNaN(+ca)||isNaN(+fo))return;
+    setBusy(true);
+    try{await fbSavePalpite(user.uid,groupId,jogo.id,+ca,+fo);setSaved(true);}
+    catch(e){console.error(e);}
+    setBusy(false);
+  };
+
+  const dtStr=new Date(jogo.kickoff).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",timeZone:"America/Sao_Paulo"});
+  const hrStr=new Date(jogo.kickoff).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"});
+  const e=React.createElement;
+
+  return e("div",{className:`jc${isLive?" live-border":""}`},
+    e("div",{className:"jc-h"},
+      e("div",{style:{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}},
+        jogo.grupo&&e("span",{className:"gtag"},`Grupo ${jogo.grupo}·R${jogo.rodada}`),
+        jogo.label&&e("span",{className:"ktag"},jogo.label),
+        e("span",{className:"jmeta"},`${dtStr} ${hrStr}`)
+      ),
+      e("span",{className:aberto?"st-ab":breve?"st-br":isLive?"st-lv":"st-fc"},
+        aberto?"✓ Aberto":breve?"⏳ Breve":isLive?"● AO VIVO":"🔒"
+      )
+    ),
+    e("div",{className:"jb"},
+      e("div",{className:"jt"},
+        e("div",{style:{flex:1,display:"flex",alignItems:"center",gap:6}},
+          e("span",{className:"tf"},FLAGS[jogo.casa]||"🏳️"),
+          e("span",{className:"tn"},jogo.casa)
+        ),
+        e("span",{className:"jvs"},"VS"),
+        e("div",{style:{flex:1,display:"flex",alignItems:"center",gap:6,justifyContent:"flex-end"}},
+          e("span",{className:"tn r"},jogo.fora),
+          e("span",{className:"tf"},FLAGS[jogo.fora]||"🏳️")
+        )
+      ),
+      isLive&&resultado&&e("div",{className:"live-box"},
+        e("span",{style:{fontSize:10,fontWeight:700,color:"#c62828",letterSpacing:1}},"⚡ AO VIVO"),
+        e("span",{className:"sc"},`${resultado.casa}–${resultado.fora}`)
+      ),
+      e("div",{className:"pr"},
+        e("span",{className:"plbl"},"🎯 PALPITE"),
+        e("div",{className:"si-wrap"},
+          e("input",{className:"si",type:"number",min:0,max:20,value:ca,onChange:ev=>{setCa(ev.target.value);setSaved(false)},disabled:!aberto,placeholder:"-"}),
+          e("span",{className:"ssep"},"×"),
+          e("input",{className:"si",type:"number",min:0,max:20,value:fo,onChange:ev=>{setFo(ev.target.value);setSaved(false)},disabled:!aberto,placeholder:"-"})
+        ),
+        aberto?e("button",{className:"bsv",onClick:save,disabled:busy||ca.length<1||fo.length<1},busy?"...":saved?"Salvo":"Salvar")
+        :saved?e("span",{className:"psv"},
+          "✓ ",
+          pts!==null&&e("span",{className:pts===7?"p7":pts===2?"p2":"p0"},pts===7?"7pts ⭐":pts===2?"2pts ✓":"0pts ✗"),
+          pts===null&&e("span",{style:{fontSize:11,color:"#aaa"}},"aguardando")
+        )
+        :e("span",{style:{fontSize:12,color:"#ccc",flexShrink:0}},"sem palpite")
+      ),
+      isFinal&&resultado&&e("div",{style:{
+        margin:"6px 0 2px",
+        padding:"8px 10px",
+        borderRadius:8,
+        background:pts===7?"#fff9c4":pts===2?"#e8f5e9":pts===0?"#fce4ec":"#f5f5f5",
+        border:`1.5px solid ${pts===7?"#f9a825":pts===2?"#43a047":pts===0?"#e53935":"#ddd"}`,
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        flexDirection:"column",
+        gap:2,
+      }},
+        e("span",{style:{fontSize:10,fontWeight:700,letterSpacing:1,color:pts===7?"#f57f17":pts===2?"#2e7d32":pts===0?"#c62828":"#888"}},"RESULTADO FINAL"),
+        e("span",{style:{
+          fontFamily:"'Bebas Neue',sans-serif",
+          fontSize:22,
+          color:pts===7?"#f57f17":pts===2?"#2e7d32":pts===0?"#c62828":"#333",
+          letterSpacing:4,
+          textAlign:"center",
+        }},`${resultado.casa} x ${resultado.fora}`)
+      )
+    )
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// JOGOS SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function JogosScreen({user,group,palpites,results}){
+  const isAmistosos = group.tipo === "amistosos";
+  const [filtro,setFiltro]=useState(isAmistosos?"amistoso":"grupos");
+  const [now,setNow]=useState(Date.now());
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),15000);return()=>clearInterval(t);},[]);
+
+  const JOGOS_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : TODOS_JOGOS;
+  const JOGOS_FG_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : JOGOS_FG;
+  const JOGOS_MM_ATIVOS = isAmistosos ? [] : JOGOS_MM;
+
+  const feitosFG=JOGOS_FG_ATIVOS.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
+  const feitosMM=JOGOS_MM_ATIVOS.filter(j=>palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id)).length;
+  const total=JOGOS_ATIVOS.length;
+
+  const FILTROS=isAmistosos?[
+    {k:"amistoso",l:"Amistosos"},
+  ]:[
+    {k:"grupos",l:"Fase de Grupos"},{k:"oitavas",l:"Oitavas"},
+    {k:"quartas",l:"Quartas"},{k:"semifinais",l:"Semis"},
+    {k:"terceiro",l:"3º Lugar"},{k:"final",l:"🏆 Final"},
+  ];
+  const FASE_LABELS={oitavas:"⚔️ OITAVAS",quartas:"🏟️ QUARTAS",semifinais:"🌟 SEMIFINAIS",terceiro:"🥉 3º LUGAR",final:"🏆 GRANDE FINAL",amistoso:"🏟️ AMISTOSOS"};
+  const e=React.createElement;
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"var(--vd)",padding:"12px 14px 14px"}},
+      e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:8}},
+        e("div",null,
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2}},"PALPITES"),
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"#fff",lineHeight:1}},
+            `${feitosFG+feitosMM}`,e("span",{style:{fontSize:14,color:"rgba(255,255,255,.5)"}},`/${total}`)
+          )
+        ),
+        e("div",{style:{textAlign:"right",fontSize:12,color:"rgba(255,255,255,.6)"}},
+          e("div",null,`Grupos: ${feitosFG}/${JOGOS_FG.length}`),
+          e("div",null,`Mata-mata: ${feitosMM}/${JOGOS_MM_ATIVOS.length}`)
+        )
+      ),
+      e("div",{className:"pbar",style:{background:"rgba(255,255,255,.2)"}},
+        e("div",{className:"pfill",style:{background:"var(--am)",width:`${Math.round(((feitosFG+feitosMM)/total)*100)}%`}})
+      )
+    ),
+    e("div",{style:{padding:"12px 14px 0"}},
+      e("div",{className:"fbar"},FILTROS.map(f=>e("button",{key:f.k,className:`fbtn${filtro===f.k?" on":""}`,onClick:()=>setFiltro(f.k)},f.l))),
+      (filtro==="grupos"||filtro==="amistoso")&&(()=>{
+        const jogosOrdenados=[...JOGOS_FG_ATIVOS].sort((a,b)=>a.kickoff-b.kickoff);
+        const porDia={};
+        jogosOrdenados.forEach(j=>{
+          const d=new Date(j.kickoff);
+          const chave=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+          if(!porDia[chave])porDia[chave]={data:d,jogos:[]};
+          porDia[chave].jogos.push(j);
+        });
+        const dias=Object.values(porDia).sort((a,b)=>a.data-b.data);
+        const meses=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+        const semana=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+        return dias.map((dia,i)=>
+          e("div",{key:i,style:{marginBottom:18}},
+            e("div",{className:"fhd",style:{background:"rgba(255,255,255,.08)"}},
+              e("h3",null,`${semana[dia.data.getDay()]}, ${dia.data.getDate()} ${meses[dia.data.getMonth()].toUpperCase()}`)
+            ),
+            dia.jogos.map(j=>e(JogoCard,{key:j.id,jogo:j,user,groupId:group.id,palpites,results,now}))
+          )
+        );
+      })(),
+      filtro!=="grupos"&&filtro!=="amistoso"&&(()=>{
+        const jf=JOGOS_MM_ATIVOS.filter(j=>j.fase===filtro);
+        if(!jf.length)return e("div",{className:"empty"},e("p",null,"Nenhum jogo nesta fase ainda."));
+        return e("div",{style:{marginBottom:18}},
+          e("div",{className:"fhd",style:{background:filtro==="final"?"var(--az)":"var(--vd)"}},e("h3",null,FASE_LABELS[filtro])),
+          jf.map(j=>e(JogoCard,{key:j.id,jogo:j,user,groupId:group.id,palpites,results,now}))
+        );
+      })()
+    )
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// AO VIVO SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function AoVivoScreen({user,group,palpites,results}){
+  const [now,setNow]=useState(Date.now());
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),10000);return()=>clearInterval(t);},[]);
+  const isAmistosos = group.tipo === "amistosos";
+  const JOGOS_ATIVOS = isAmistosos ? TODOS_JOGOS_AMISTOSOS : TODOS_JOGOS;
+
+  const jogosAgora=JOGOS_ATIVOS.filter(j=>{const diff=now-j.kickoff;return diff>=-10*60*1000&&diff<3*60*60*1000;});
+  const proximos=JOGOS_ATIVOS.filter(j=>j.kickoff>now).sort((a,b)=>a.kickoff-b.kickoff).slice(0,3);
+  const e=React.createElement;
+
+  if(!jogosAgora.length) return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"linear-gradient(135deg,#c62828,#b71c1c)",padding:"16px 14px"}},
+      e("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+        e("span",{className:"live-dot"}),
+        e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"#fff",letterSpacing:1}},"AO VIVO")
+      ),
+      e("div",{style:{fontSize:12,color:"rgba(255,255,255,.7)"}},"Nenhum jogo em andamento")
+    ),
+    e("div",{style:{padding:"16px 14px"}},
+      e("div",{className:"empty",style:{marginBottom:18}},
+        e("div",{style:{fontSize:36,marginBottom:8}},"📺"),
+        e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:18,fontWeight:700,color:"#aaa"}},"SEM JOGOS AGORA"),
+        e("p",null,"Nenhuma partida em andamento.")
+      ),
+      proximos.length>0&&e("div",null,
+        e("div",{className:"sec"},"PRÓXIMOS JOGOS"),
+        proximos.map(j=>{
+          const dt=new Date(j.kickoff).toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"short",timeZone:"America/Sao_Paulo"});
+          const hr=new Date(j.kickoff).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"});
+          const tenho=palpites.some(p=>p.userId===user.uid&&p.jogoId===j.id);
+          return e("div",{key:j.id,style:{background:"#fff",borderRadius:"var(--rs)",padding:"12px 14px",marginBottom:8,border:"1.5px solid var(--cb)",display:"flex",alignItems:"center",gap:12}},
+            e("div",{style:{textAlign:"center",flexShrink:0}},
+              e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"var(--az)",lineHeight:1}},hr),
+              e("div",{style:{fontSize:10,color:"#999",fontWeight:600}},dt)
+            ),
+            e("div",{style:{flex:1}},
+              e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700}},`${FLAGS[j.casa]||""} ${j.casa} × ${j.fora} ${FLAGS[j.fora]||""}`),
+              j.grupo&&e("div",{style:{fontSize:11,color:"#999"}},`Grupo ${j.grupo} · R${j.rodada}`),
+              j.label&&e("div",{style:{fontSize:11,color:"#999"}},j.label)
+            ),
+            e("span",{style:{fontSize:11,background:tenho?"#e8f5e9":"#fff3e0",color:tenho?"#2e7d32":"#e65100",borderRadius:6,padding:"2px 8px",fontWeight:700}},tenho?"✓ palpitado":"sem palpite")
+          );
+        })
+      )
+    )
+  );
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"linear-gradient(135deg,#c62828,#b71c1c)",padding:"16px 14px"}},
+      e("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+        e("span",{className:"live-dot"}),
+        e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"#fff",letterSpacing:1}},`AO VIVO — ${jogosAgora.length} JOGO${jogosAgora.length>1?"S":""}`)
+      ),
+      e("div",{style:{fontSize:12,color:"rgba(255,255,255,.7)"}},`Palpites dos ${group.members.length} participantes`)
+    ),
+    e("div",{style:{padding:"14px 14px 0"}},
+      jogosAgora.map(jogo=>{
+        const resultado=results[jogo.id];
+        const mp=group.members.map(m=>{
+          const p=palpites.find(pp=>pp.userId===m.userId&&pp.jogoId===jogo.id);
+          const pts=p&&resultado?calcPts(p,resultado):null;
+          return{...m,palpite:p||null,pts};
+        }).sort((a,b)=>{const r=x=>x.pts===7?0:x.pts===2?1:x.pts===0?2:3;return r(a)-r(b);});
+        const exatos=mp.filter(m=>m.pts===7).length,venc=mp.filter(m=>m.pts===2).length;
+        return e("div",{key:jogo.id,className:"live-card"},
+          e("div",{className:"live-card-h"},
+            e("span",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:11,color:"var(--am)",fontWeight:700,letterSpacing:1}},jogo.grupo?`GRUPO ${jogo.grupo}`:jogo.label),
+            resultado?.status==="live"&&e("span",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,color:"#fff",background:"rgba(255,255,255,.2)",borderRadius:6,padding:"2px 8px",animation:"pulse 1.5s infinite"}},"⚡ AO VIVO"),
+            resultado?.status==="final"&&e("span",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,color:"#fff",background:"rgba(255,255,255,.2)",borderRadius:6,padding:"2px 8px"}},"ENCERRADO")
+          ),
+          e("div",{style:{padding:"12px 16px"}},
+            e("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between"}},
+              e("div",{style:{flex:1,textAlign:"center"}},e("div",{style:{fontSize:24}},FLAGS[jogo.casa]||"🏳️"),e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700}},jogo.casa)),
+              e("div",{style:{padding:"0 12px",textAlign:"center"}},
+                resultado?e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:38,color:resultado.status==="live"?"#c62828":"var(--vde)",letterSpacing:4,lineHeight:1}},`${resultado.casa}–${resultado.fora}`)
+                :e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:24,color:"#ddd",letterSpacing:2}},"–VS–")
+              ),
+              e("div",{style:{flex:1,textAlign:"center"}},e("div",{style:{fontSize:24}},FLAGS[jogo.fora]||"🏳️"),e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700}},jogo.fora))
+            )
+          ),
+          resultado&&e("div",{style:{padding:"8px 16px",background:"#fafafa",borderTop:"1px solid #f0f0f0",display:"flex",gap:12,justifyContent:"center"}},
+            [["⭐",exatos,"Exatos"],["✅",venc,"Vencedor"],["⬜",mp.filter(m=>!m.palpite).length,"S/ Palpite"]].map(([ic,n,l])=>
+              e("div",{key:l,style:{textAlign:"center"}},e("div",{style:{fontSize:14}},ic),e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,lineHeight:1}},n),e("div",{style:{fontSize:10,color:"#999",fontWeight:600}},l))
+            )
+          ),
+          e("div",{style:{padding:"12px 14px 14px"}},
+            e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,letterSpacing:1,color:"#999",marginBottom:6}},"PALPITES"),
+            mp.map(m=>{
+              const rc=m.pts===7?"palp-row ex":m.pts===2?"palp-row vn":m.pts===0?"palp-row er":"palp-row";
+              return e("div",{key:m.userId,className:rc},
+                e("div",{className:`mini-av${m.userId===user.uid?" eu":""}`},m.apelido[0].toUpperCase()),
+                e("div",{style:{flex:1}},
+                  e("div",{style:{fontWeight:600,fontSize:14}},m.apelido,m.userId===user.uid&&e("span",{style:{fontSize:11,color:"#aaa",fontWeight:400}}," (você)")),
+                  !m.palpite&&e("div",{style:{fontSize:12,color:"#aaa"}},"Sem palpite")
+                ),
+                m.palpite&&e("div",{style:{textAlign:"right"}},
+                  e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,letterSpacing:3}},`${m.palpite.casa}–${m.palpite.fora}`),
+                  m.pts!==null&&e("span",{className:m.pts===7?"p7":m.pts===2?"p2":"p0"},m.pts===7?"⭐7pts":m.pts===2?"✓2pts":"✗0pts")
+                )
+              );
+            })
+          )
+        );
+      })
+    )
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// ESPECIAIS SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function EspeciaisScreen({user,group,especiais,gabarito}){
+  const now=Date.now(),aberto=now<DEADLINE_COPA;
+  const prazoStr=new Date(DEADLINE_COPA).toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
+  const myEsp=PERGUNTAS.map(p=>({...p,resp:especiais.find(e=>e.userId===user.uid&&e.pergId===p.id)?.resposta||null}));
+  const respondidas=myEsp.filter(p=>p.resp).length;
+  const [toast,setToast]=useState(null);
+  const showToast=m=>{setToast(m);setTimeout(()=>setToast(null),2000)};
+
+  const select=async(pid,o)=>{
+    if(!aberto)return;
+    try{await fbSaveEspecial(user.uid,group.id,pid,o);showToast("Resposta salva!");}
+    catch(e){console.error(e);}
+  };
+  const e=React.createElement;
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"var(--az)",padding:"12px 14px 14px"}},
+      e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2}},"PERGUNTAS ESPECIAIS"),
+      e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:8}},
+        e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"#fff",lineHeight:1}},`${respondidas}`,e("span",{style:{fontSize:14,color:"rgba(255,255,255,.5)"}},`/${PERGUNTAS.length}`)),
+        e("div",{style:{background:aberto?"rgba(255,255,255,.15)":"rgba(255,80,80,.3)",borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:700,color:"#fff",fontFamily:"'Barlow Condensed',sans-serif",letterSpacing:1}},aberto?`⏰ ${prazoStr.toUpperCase()}`:"🔒 ENCERRADO")
+      ),
+      e("div",{className:"pbar",style:{background:"rgba(255,255,255,.2)"}},e("div",{className:"pfill",style:{background:"var(--am)",width:`${Math.round((respondidas/PERGUNTAS.length)*100)}%`}}))
+    ),
+    e("div",{style:{padding:"14px 14px 0"}},
+      e("div",{className:"warn-box"},"⭐ Cada pergunta correta vale ",e("strong",null,"20 pontos"),". Gabarito definido pelo admin ao final do torneio."),
+      myEsp.map((p,i)=>{
+        const correto=gabarito[p.id],isC=p.resp&&correto&&p.resp===correto,isE=p.resp&&correto&&p.resp!==correto;
+        return e("div",{key:p.id,className:"eq"},
+          e("div",{className:"eq-h"},
+            e("div",{className:"eq-n"},i+1),
+            e("div",{style:{flex:1}},e("div",{className:"eq-t"},p.txt),e("div",{className:"eq-p"},"⭐ 20 pts · ",(correto?"Gabarito definido":"Aguardando gabarito"))),
+            isC&&e("div",{style:{fontSize:20,marginLeft:8,flexShrink:0}},"✅"),
+            isE&&e("div",{style:{fontSize:20,marginLeft:8,flexShrink:0}},"❌")
+          ),
+          e("div",{className:"eq-o"},p.opcoes.map(o=>{
+            let cls="opbtn";
+            if(correto){cls+=correto===o?" correto":p.resp===o?" errado":"";}
+            else if(p.resp===o)cls+=" on";
+            return e("button",{key:o,className:cls,onClick:()=>select(p.id,o),disabled:!aberto},
+              p.resp===o&&!correto?"✓ ":"",correto===o?"✓ ":" ",o,
+              correto===o&&p.resp===o&&e("span",{style:{marginLeft:6,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,color:"var(--vde)",fontSize:13}},"+20pts")
+            );
+          }))
+        );
+      })
+    ),
+    toast&&e(Toast,{msg:toast})
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// RANKING SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function RankingScreen({user,group,palpites,results,especiais,gabarito,onOpenPerfil}){
+  const ranked=useMemo(()=>{
+    return group.members.map(m=>{
+      const pts=computeTotalPts(m.userId,palpites,results,especiais,gabarito);
+      const exatos=TODOS_JOGOS.reduce((a,j)=>{
+        const p=palpites.find(pp=>pp.userId===m.userId&&pp.jogoId===j.id);
+        const r=results[j.id];
+        return a+(p&&r&&calcPts(p,r)===7?1:0);
+      },0);
+      const palp=palpites.filter(p=>p.userId===m.userId).length;
+      return{...m,pts,exatos,palp};
+    }).sort((a,b)=>b.pts-a.pts||b.palp-a.palp);
+  },[group,palpites,results,especiais,gabarito]);
+
+  const myIdx=ranked.findIndex(m=>m.userId===user.uid);
+  const withResults=Object.keys(results).length;
+  const jogosFaltam=TODOS_JOGOS.length-withResults;
+  const e=React.createElement;
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"var(--vd)",padding:"12px 14px 14px"}},
+      e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:8}},
+        e("div",null,
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2}},"CLASSIFICAÇÃO"),
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"#fff",lineHeight:1}},`${group.members.length} `,e("span",{style:{fontSize:14,color:"rgba(255,255,255,.5)"}},"jogadores"))
+        ),
+        myIdx>=0&&e("div",{style:{textAlign:"right"}},
+          e("div",{style:{fontSize:12,color:"rgba(255,255,255,.6)"}},"Você está em"),
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"var(--am)",lineHeight:1}},`#${myIdx+1}`)
+        )
+      ),
+      e("div",{style:{fontSize:12,color:"rgba(255,255,255,.5)"}},`${withResults} resultado${withResults!==1?"s":""} · ${jogosFaltam} jogo${jogosFaltam!==1?"s":""} restante${jogosFaltam!==1?"s":""}`)
+    ),
+    e("div",{style:{padding:"14px"}},
+      withResults===0&&e("div",{className:"warn-box"},"⚽ Aguardando resultados dos jogos para calcular a pontuação."),
+
+      // Podium
+      ranked.length>=3&&withResults>0&&e("div",{style:{background:"#fff",borderRadius:"var(--r)",padding:"16px 10px",marginBottom:14,border:"1.5px solid var(--cb)"}},
+        e("div",{className:"sec",style:{textAlign:"center",marginBottom:14}},"PÓDIO"),
+        e("div",{style:{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:6}},
+          // 2nd
+          e("div",{style:{textAlign:"center",flex:1}},
+            e("div",{style:{width:44,height:44,borderRadius:"50%",background:"#C0C0C0",color:"#fff",fontWeight:700,fontSize:18,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 6px"}},ranked[1].apelido[0].toUpperCase()),
+            e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:"#555"}},ranked[1].apelido),
+            e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"#C0C0C0"}},ranked[1].pts),
+            e("div",{style:{background:"#C0C0C0",borderRadius:"6px 6px 0 0",height:50,marginTop:6,display:"flex",alignItems:"center",justifyContent:"center"}},e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"#fff"}},"2"))
+          ),
+          // 1st
+          e("div",{style:{textAlign:"center",flex:1}},
+            e("div",{style:{fontSize:20,marginBottom:4}},"👑"),
+            e("div",{style:{width:54,height:54,borderRadius:"50%",background:"var(--am)",color:"var(--vde)",fontWeight:700,fontSize:22,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 6px",border:"3px solid #E6C800",boxShadow:"0 4px 12px rgba(255,223,0,.4)"}},ranked[0].apelido[0].toUpperCase()),
+            e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:"#222"}},ranked[0].apelido),
+            e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:24,color:"#E6A817"}},ranked[0].pts),
+            e("div",{style:{background:"var(--am)",borderRadius:"6px 6px 0 0",height:70,marginTop:6,display:"flex",alignItems:"center",justifyContent:"center"}},e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:36,color:"var(--vde)"}},"1"))
+          ),
+          // 3rd
+          e("div",{style:{textAlign:"center",flex:1}},
+            e("div",{style:{width:44,height:44,borderRadius:"50%",background:"#CD7F32",color:"#fff",fontWeight:700,fontSize:18,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 6px"}},ranked[2].apelido[0].toUpperCase()),
+            e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:"#555"}},ranked[2].apelido),
+            e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"#CD7F32"}},ranked[2].pts),
+            e("div",{style:{background:"#CD7F32",borderRadius:"6px 6px 0 0",height:36,marginTop:6,display:"flex",alignItems:"center",justifyContent:"center"}},e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"#fff"}},"3"))
+          )
+        )
+      ),
+
+      // Full table
+      e("div",{className:"rk"},
+        ranked.map((m,i)=>{
+          const pos=i+1;
+          return e("div",{key:m.userId,className:`rk-row${m.userId===user.uid?" eu":""}`,onClick:()=>onOpenPerfil(m.userId)},
+            e("div",{className:`rk-pos${pos===1?" g1":pos===2?" g2":pos===3?" g3":""}`,style:{fontSize:pos<=3?"inherit":"inherit"}},pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos),
+            e("div",{className:`rk-av${m.userId===user.uid?" eu":""}`},m.apelido[0].toUpperCase()),
+            e("div",{style:{flex:1}},
+              e("div",{className:"rk-nm"},m.apelido,m.userId===user.uid&&e("span",{style:{fontSize:11,color:"#aaa",fontWeight:400}}," (você)")),
+              e("div",{className:"rk-sb"},`⭐${m.exatos} exatos · ${m.palp} palpites`)
+            ),
+            e("div",{className:"rk-pts"},m.pts),
+            e("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"#ddd",strokeWidth:"2.5"},e("path",{d:"M9 18l6-6-6-6"}))
+          );
+        })
+      ),
+
+      // Scoring table
+      e("div",{style:{background:"#fff",borderRadius:"var(--rs)",border:"1.5px solid var(--cb)",overflow:"hidden",marginTop:16}},
+        e("div",{style:{padding:"10px 14px",background:"#f8f8f8",fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,letterSpacing:1,color:"#999"}},"PONTUAÇÃO"),
+        [["🎯 Placar exato","7 pts"],["✅ Vencedor / empate","2 pts"],["❌ Erro","0 pts"],["⭐ Pergunta especial","20 pts"]].map(([t,p])=>
+          e("div",{key:t,style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 14px",borderBottom:"1px solid #f5f5f5",fontSize:14}},
+            e("span",null,t),e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"var(--vd)"}},p)
+          )
+        )
+      )
+    )
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// PERFIL SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function PerfilScreen({memberId,group,currentUserId,palpites,results,especiais,gabarito,onBack}){
+  const member=group.members.find(m=>m.userId===memberId);
+  const isMe=memberId===currentUserId;
+  const e=React.createElement;
+
+  const stats=useMemo(()=>{
+    let exatos=0,venc=0,erros=0,ptsFG=0,ptsMM=0,ptsEsp=0,palp=0;
+    const hist=[];
+    TODOS_JOGOS.forEach(j=>{
+      const p=palpites.find(pp=>pp.userId===memberId&&pp.jogoId===j.id);
+      const r=results[j.id];
+      if(!r)return;
+      const pts=p?calcPts(p,r):0;
+      if(p)palp++;
+      if(pts===7)exatos++;else if(pts===2)venc++;else if(pts===0&&p)erros++;
+      if(j.fase==="grupos")ptsFG+=pts||0;else ptsMM+=pts||0;
+      hist.push({jogoId:j.id,jogo:j,palpite:p||null,resultado:r,pts:pts||0});
+    });
+    PERGUNTAS.forEach(p=>{
+      const ee=especiais.find(x=>x.userId===memberId&&x.pergId===p.id);
+      if(ee&&gabarito[p.id]&&ee.resposta===gabarito[p.id])ptsEsp+=20;
+    });
+    const jogosComRes=Object.keys(results).length;
+    const aprov=jogosComRes>0?Math.round(((exatos*7+venc*2)/(jogosComRes*7))*100):0;
+    return{exatos,venc,erros,ptsFG,ptsMM,ptsEsp,palp,aprov,hist,total:ptsFG+ptsMM+ptsEsp};
+  },[memberId,palpites,results,especiais,gabarito]);
+
+  if(!member) return null;
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{style:{background:"var(--vd)",padding:"20px 14px 16px"}},
+      e("button",{onClick:onBack,style:{display:"flex",alignItems:"center",gap:6,color:"rgba(255,255,255,.8)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,marginBottom:12}},
+        e("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2.5"},e("path",{d:"M19 12H5M12 5l-7 7 7 7"})),
+        "Ranking"
+      ),
+      e("div",{style:{display:"flex",alignItems:"center",gap:14}},
+        e("div",{style:{width:64,height:64,borderRadius:"50%",background:isMe?"var(--am)":"rgba(255,255,255,.2)",color:isMe?"var(--vde)":"#fff",fontWeight:700,fontSize:26,display:"flex",alignItems:"center",justifyContent:"center",border:"3px solid rgba(255,255,255,.3)",flexShrink:0}},member.apelido[0].toUpperCase()),
+        e("div",null,
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"#fff",letterSpacing:1,lineHeight:1}},member.apelido,isMe&&" 👤"),
+          e("div",{style:{fontSize:12,color:"rgba(255,255,255,.65)",marginTop:4}},member.isOwner?"👑 Criador do bolão":"Participante"),
+          e("div",{style:{marginTop:6,display:"flex",gap:6}},
+            e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"var(--am)"}},`${stats.total} pts`),
+            e("span",{style:{fontSize:12,color:"rgba(255,255,255,.6)",alignSelf:"flex-end",paddingBottom:2}},`${stats.aprov}% aproveit.`)
+          )
+        )
+      )
+    ),
+    e("div",{style:{padding:"14px"}},
+      e("div",{className:"stat-grid"},
+        [
+          [stats.exatos,"⭐","EXATOS","#f57f17"],
+          [stats.venc,"✅","VENCEDOR","#2e7d32"],
+          [stats.erros,"❌","ERROS","#c62828"],
+          [stats.palp,"🎯","PALPITES","var(--vd)"],
+          [`${stats.aprov}%`,"📊","APROVEIT.","var(--az)"],
+          [stats.ptsEsp/20,"⭐","ESP. CERTAS","#7b1fa2"],
+        ].map(([val,ic,lbl,col])=>e("div",{key:lbl,className:"stat-cell"},
+          e("div",{style:{fontSize:16,marginBottom:2}},ic),
+          e("div",{className:"stat-num",style:{color:col}},val),
+          e("div",{className:"stat-lbl"},lbl)
+        ))
+      ),
+      e("div",{style:{background:"#fff",borderRadius:"var(--r)",padding:"14px",marginBottom:14,border:"1.5px solid var(--cb)"}},
+        e("div",{className:"sec",style:{marginBottom:10}},"PONTOS POR FASE"),
+        [["⚽ Fase de Grupos",stats.ptsFG,JOGOS_FG.length*7,"var(--vd)"],["⚔️ Mata-mata",stats.ptsMM,JOGOS_MM.length*7,"var(--az)"],["⭐ Especiais",stats.ptsEsp,PERGUNTAS.length*20,"#7b1fa2"]].map(([label,pts,max,col])=>
+          e("div",{key:label,style:{marginBottom:10}},
+            e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:4}},e("span",{style:{fontSize:13,fontWeight:600}},label),e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,color:col}},`${pts} pts`)),
+            e("div",{className:"pbar"},e("div",{className:"pfill",style:{background:col,width:`${max>0?Math.round((pts/max)*100):0}%`}}))
+          )
+        )
+      ),
+      e("div",{className:"sec"},"HISTÓRICO"),
+      stats.hist.length===0&&e("div",{className:"empty"},e("p",null,"Nenhum resultado ainda.")),
+      stats.hist.length>0&&e("div",{style:{background:"#fff",borderRadius:"var(--r)",overflow:"hidden",border:"1.5px solid var(--cb)"}},
+        stats.hist.map((h,i)=>{
+          const icon=h.pts===7?"⭐":h.pts===2?"✅":h.palpite?"❌":"⬜";
+          const bg=h.pts===7?"#fffde7":h.pts===2?"#f0fff4":h.palpite?"#fff5f5":"#fafafa";
+          return e("div",{key:h.jogoId,className:"hist-row",style:{background:bg}},
+            e("div",{style:{fontSize:18,flexShrink:0,width:24,textAlign:"center"}},icon),
+            e("div",{style:{flex:1}},
+              e("div",{style:{fontWeight:600,fontSize:13}},`${FLAGS[h.jogo.casa]||""} ${h.jogo.casa}`),
+              e("div",{style:{fontWeight:600,fontSize:13}},`${FLAGS[h.jogo.fora]||""} ${h.jogo.fora}`)
+            ),
+            e("div",{style:{textAlign:"center"}},
+              e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:16,letterSpacing:3}},`${h.resultado.casa}–${h.resultado.fora}`),
+              e("div",{style:{fontSize:9,color:"#bbb",fontWeight:700,letterSpacing:1}},"REAL")
+            ),
+            e("div",{style:{textAlign:"center"}},
+              h.palpite?e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:14,letterSpacing:2,color:"#aaa"}},`${h.palpite.casa}–${h.palpite.fora}`)
+              :e("div",{style:{fontSize:11,color:"#ddd"}},"—")
+            ),
+            e("div",{style:{width:46,textAlign:"right"}},
+              h.pts===7&&e("span",{className:"p7"},"7pts"),
+              h.pts===2&&e("span",{className:"p2"},"2pts"),
+              h.pts===0&&h.palpite&&e("span",{className:"p0"},"0pts"),
+              !h.palpite&&e("span",{style:{fontSize:11,color:"#ccc"}},"—")
+            )
+          );
+        })
+      )
+    )
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// ADMIN PANEL
+// ════════════════════════════════════════════════════════════════════════════
+function AdminPanel({user,group,results,gabarito}){
+  const [tab,setTab]=useState("resultados");
+  const [filtro,setFiltro]=useState("grupos");
+  const [syncing,setSyncing]=useState(false);
+  const [syncMsg,setSyncMsg]=useState(null);
+  const [apiKey,setApiKey]=useState(()=>localStorage.getItem("bce_api_key")||"");
+  const [toast,setToast]=useState(null);
+  const [,refresh]=useState(0);
+  const showToast=m=>{setToast(m);setTimeout(()=>setToast(null),2200)};
+
+  const handleSync=async()=>{
+    const key=localStorage.getItem("bce_api_key")||"";
+    if(!key){setSyncMsg({t:"err",m:"Configure sua chave da API."});return;}
+    setSyncing(true);setSyncMsg(null);
+    try{
+      const r=await fetch(`https://api.football-data.org/v4/competitions/WC/matches?season=2026&status=FINISHED`,{headers:{"X-Auth-Token":key}});
+      if(r.status===429){setSyncMsg({t:"err",m:"Limite de requisições atingido."});setSyncing(false);return;}
+      if(!r.ok){setSyncMsg({t:"err",m:`Erro API: ${r.status}`});setSyncing(false);return;}
+      const data=await r.json();
+      const FD_MAP={"Mexico":"México","United States":"EUA","Uruguay":"Uruguai","Algeria":"Argélia","Brazil":"Brasil","Japan":"Japão","Spain":"Espanha","Morocco":"Marrocos","France":"França","Germany":"Alemanha","Australia":"Austrália","Saudi Arabia":"Arábia Saudita","England":"Inglaterra","Portugal":"Portugal","Iran":"Irã","Ecuador":"Equador","Argentina":"Argentina","Netherlands":"Holanda","Senegal":"Senegal","Poland":"Polônia","Italy":"Itália","Croatia":"Croácia","Canada":"Canadá","Peru":"Peru","Belgium":"Bélgica","Turkey":"Turquia","Chile":"Chile","Ukraine":"Ucrânia","Korea Republic":"Coreia do Sul","Colombia":"Colômbia","Costa Rica":"Costa Rica","South Africa":"África do Sul","Switzerland":"Suíça","Denmark":"Dinamarca","New Zealand":"Nova Zelândia","Togo":"Togo","Serbia":"Sérvia","Egypt":"Egito","Venezuela":"Venezuela","Ivory Coast":"Costa do Marfim","Cameroon":"Camarões","Romania":"Romênia","Guatemala":"Guatemala","Qatar":"Qatar","Nigeria":"Nigéria","Russia":"Rússia","Bolivia":"Bolívia","Albania":"Albânia"};
+      let count=0;
+      for(const m of(data.matches||[])){
+        if(m.status!=="FINISHED")continue;
+        const h=FD_MAP[m.homeTeam?.name]||m.homeTeam?.name||"",a=FD_MAP[m.awayTeam?.name]||m.awayTeam?.name||"",ft=m.score?.fullTime;
+        if(!ft||ft.home==null)continue;
+        const j=TODOS_JOGOS.find(j=>(j.casa===h&&j.fora===a)||(j.casa===a&&j.fora===h));
+        if(!j)continue;
+        const sw=j.casa===a;
+        await fbSetResult(group.id,j.id,sw?ft.away:ft.home,sw?ft.home:ft.away,"final");
+        count++;
+      }
+      setSyncMsg({t:"ok",m:`✓ ${count} resultado${count!==1?"s":""} importado${count!==1?"s":""}!`});
+    }catch(ex){setSyncMsg({t:"err",m:"Erro de conexão com a API."});}
+    setSyncing(false);
+  };
+
+  const e=React.createElement;
+
+  function ManualRow({jogo}){
+    const r=results[jogo.id];
+    const [ca,setCa]=useState(r!=null?String(r.casa):"");
+    const [fo,setFo]=useState(r!=null?String(r.fora):"");
+    const [st,setSt]=useState(r?.status||"final");
+    const [editing,setEditing]=useState(!r);
+    const [busy,setBusy]=useState(false);
+    const save=async()=>{
+      if(ca.length<1||fo.length<1||isNaN(+ca)||isNaN(+fo))return;
+      setBusy(true);
+      try{await fbSetResult(group.id,jogo.id,+ca,+fo,st);setEditing(false);showToast(`✓ ${jogo.casa} ${ca}×${fo} ${jogo.fora}`);}
+      catch(ex){showToast("Erro ao salvar resultado.");}
+      setBusy(false);
+    };
+    const del=async()=>{
+      try{await fbDeleteResult(group.id,jogo.id);setCa("");setFo("");setEditing(true);showToast("Resultado removido.");}
+      catch(ex){showToast("Erro ao remover.");}
+    };
+    const dt=new Date(jogo.kickoff).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",timeZone:"America/Sao_Paulo"});
+    return e("div",{className:`admin-row${r?" has-r":""}` },
+      e("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:6}},
+        e("div",null,
+          e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700}},`${FLAGS[jogo.casa]||"🏳️"} ${jogo.casa} × ${jogo.fora} ${FLAGS[jogo.fora]||"🏳️"}`),
+          e("div",{style:{fontSize:11,color:"#999"}},(jogo.grupo?"Grupo "+jogo.grupo+"·R"+jogo.rodada:jogo.label)+" · "+dt)
+        ),
+        r&&!editing&&e("div",{style:{display:"flex",alignItems:"center",gap:8}},
+          e("span",{className:"res-badge"},`${r.casa}–${r.fora}`),
+          e("span",{style:{fontSize:11,background:r.status==="live"?"#ffebee":"#e8f5e9",color:r.status==="live"?"#c62828":"#2e7d32",borderRadius:6,padding:"2px 6px",fontWeight:700}},r.status==="live"?"⚡ LIVE":"✓ FINAL")
+        )
+      ),
+      editing?e("div",{style:{marginTop:10}},
+        e("div",{className:"res-inputs"},
+          e("input",{className:"res-input",type:"number",min:0,max:20,value:ca,onChange:ev=>setCa(ev.target.value),placeholder:"0"}),
+          e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"#ccc"}},"×"),
+          e("input",{className:"res-input",type:"number",min:0,max:20,value:fo,onChange:ev=>setFo(ev.target.value),placeholder:"0"}),
+          e("select",{value:st,onChange:ev=>setSt(ev.target.value),style:{padding:"8px 10px",border:"1.5px solid var(--cb)",borderRadius:8,fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,color:"#333",outline:"none"}},
+            e("option",{value:"live"},"⚡ Ao Vivo"),
+            e("option",{value:"final"},"✓ Final")
+          )
+        ),
+        e("div",{style:{display:"flex",gap:8,marginTop:10}},
+          e("button",{className:"btn-sm",onClick:save,disabled:busy||ca.length<1||fo.length<1},busy?"...":"SALVAR"),
+          r&&e("button",{className:"btn-sm-gray",onClick:()=>{setCa(String(r.casa));setFo(String(r.fora));setEditing(false)}},"CANCELAR")
+        )
+      ):e("div",{style:{display:"flex",gap:8,marginTop:8}},
+        e("button",{className:"btn-sm-gray",onClick:()=>setEditing(true)},"✏️ Editar"),
+        e("button",{className:"btn-sm-red",onClick:del},"🗑 Remover")
+      )
+    );
+  }
+
+  function GabRow({perg,idx}){
+    const cur=gabarito[perg.id];
+    return e("div",{style:{background:"#fff",borderRadius:"var(--rs)",padding:"14px",marginBottom:10,border:"1.5px solid var(--cb)"}},
+      e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:"var(--az)",marginBottom:8}},`P${idx+1}. ${perg.txt}`),
+      e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+        perg.opcoes.map(o=>e("button",{key:o,onClick:async()=>{await fbSetGabarito(group.id,perg.id,o);showToast("Gabarito salvo!");},style:{padding:"8px 12px",border:`1.5px solid ${cur===o?"var(--vd)":"var(--cb)"}`,borderRadius:8,background:cur===o?"#e8f5e9":"#fff",color:cur===o?"var(--vde)":"#333",fontFamily:"'Barlow',sans-serif",fontSize:14,fontWeight:cur===o?700:400,cursor:"pointer",textAlign:"left",transition:"all .15s"}},cur===o?"✓ ":"",o))
+      )
+    );
+  }
+
+  const isAmistosos = group.tipo === "amistosos";
+  const jogosShow = isAmistosos
+    ? JOGOS_AMISTOSOS
+    : filtro==="grupos" ? JOGOS_FG : JOGOS_MM.filter(j=>j.fase===filtro);
+  const FILTROS = isAmistosos
+    ? [{k:"grupos",l:"Amistosos"}]
+    : [{k:"grupos",l:"Grupos"},{k:"oitavas",l:"Oitavas"},{k:"quartas",l:"Quartas"},{k:"semifinais",l:"Semis"},{k:"terceiro",l:"3º"},{k:"final",l:"Final"}];
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{className:"admin-h"},
+      e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"var(--am)",letterSpacing:1}},"🛡️ PAINEL DO ADMINISTRADOR"),
+      e("div",{style:{fontSize:12,color:"rgba(255,255,255,.7)"}},"Acesso exclusivo do criador")
+    ),
+    e("div",{style:{background:"var(--az)",padding:"0 14px",display:"flex",gap:0,borderBottom:"1px solid rgba(255,255,255,.15)"}},
+      [["resultados","📋 Resultados"],["api","🌐 API"],["especiais","⭐ Especiais"],["excluir","🗑️ Excluir"]].map(([k,l])=>
+        e("button",{key:k,className:`gn-btn${tab===k?" on":""}`,onClick:()=>setTab(k)},l)
+      )
+    ),
+    e("div",{style:{padding:"14px"}},
+      tab==="resultados"&&e("div",null,
+        e("div",{className:"warn-box",style:{marginBottom:14}},"📋 Inserir resultado recalcula os pontos de todos automaticamente."),
+        e("div",{className:"fbar"},FILTROS.map(f=>e("button",{key:f.k,className:`fbtn${filtro===f.k?" on":""}`,onClick:()=>setFiltro(f.k)},f.l))),
+        jogosShow.map(j=>e(ManualRow,{key:j.id,jogo:j}))
+      ),
+      tab==="api"&&e("div",null,
+        e("div",{className:"info-box",style:{marginBottom:16}},"🌐 Use a API gratuita ",e("strong",null,"football-data.org")," para importar resultados automaticamente."),
+        e("div",{className:"fg"},
+          e("label",{className:"fl"},"SUA API KEY"),
+          e("div",{style:{display:"flex",gap:8}},
+            e("input",{className:"fi",type:"text",placeholder:"Cole sua chave aqui...",value:apiKey,onChange:ev=>setApiKey(ev.target.value),style:{fontFamily:"monospace",fontSize:13}}),
+            e("button",{className:"btn-sm",onClick:()=>{localStorage.setItem("bce_api_key",apiKey.trim());showToast("Chave salva!")},style:{flexShrink:0}},"SALVAR")
+          )
+        ),
+        e("button",{className:"btn-p",onClick:handleSync,disabled:syncing,style:{marginBottom:14}},syncing?"🔄 SINCRONIZANDO...":"🔄 SINCRONIZAR AGORA"),
+        syncMsg&&e("div",{className:syncMsg.t==="err"?"err-box":"ok-box",style:{marginBottom:14}},syncMsg.m)
+      ),
+      tab==="especiais"&&e("div",null,
+        e("div",{className:"warn-box",style:{marginBottom:14}},"⭐ Defina as respostas corretas. Os 20pts são atribuídos automaticamente."),
+        PERGUNTAS.map((p,i)=>e(GabRow,{key:p.id,perg:p,idx:i}))
+      ),
+      tab==="excluir"&&e("div",null,
+        e("div",{style:{background:"#fff3e0",border:"1px solid #ffb74d",borderRadius:10,padding:"14px",marginBottom:16,fontSize:13,color:"#e65100"}},
+          "⚠️ ",e("strong",null,"Atenção:"),` Excluir o bolão "${group.nome}" irá remover o grupo permanentemente. Esta ação não pode ser desfeita.`
+        ),
+        e("button",{
+          style:{width:"100%",padding:"14px",background:"#c62828",color:"#fff",border:"none",borderRadius:10,fontFamily:"'Barlow Condensed',sans-serif",fontSize:18,fontWeight:700,letterSpacing:1,cursor:"pointer"},
+          onClick:async()=>{
+            if(window.confirm(`Tem certeza que deseja excluir o bolão "${group.nome}"? Esta ação não pode ser desfeita.`)){
+              try{
+                await fbDeleteGroup(group.id);
+                window.location.reload();
+              }catch(err){
+                alert("Erro ao excluir: "+err.message);
+              }
+            }
+          }
+        },"🗑️ EXCLUIR ESTE BOLÃO")
+      )
+    ),
+    toast&&e(Toast,{msg:toast})
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// FINANCE SCREEN
+// ════════════════════════════════════════════════════════════════════════════
+function FinanceScreen({user,group,palpites,results,especiais,gabarito}){
+  const isAdmin=group.ownerId===user.uid;
+  const payments=usePayments(group.id);
+  const prizeResult=usePrizeResult(group.id);
+  const [tab,setTab]=useState("fundo");
+  const [showCfg,setShowCfg]=useState(false);
+  const [toast,setToast]=useState(null);
+  const showToast=m=>{setToast(m);setTimeout(()=>setToast(null),2200)};
+  const cfg=group.financeConfig;
+  const fundo=calcFundo(group,payments);
+  const premios=calcPremiosArr(group,fundo);
+  const pagantes=Object.values(payments).filter(p=>p.pago).length;
+  const pendentes=group.members.length-pagantes;
+
+  const ranked=useMemo(()=>group.members.map(m=>({...m,pts:computeTotalPts(m.userId,palpites,results,especiais,gabarito)})).sort((a,b)=>b.pts-a.pts),[group,palpites,results,especiais,gabarito]);
+
+  const e=React.createElement;
+  const POS_IC=["🥇","🥈","🥉","4️⃣","5️⃣"];
+  const POS_C=["pos-1","pos-2","pos-3","pos-n","pos-n"];
+
+  function FinCfgModal(){
+    const ex=cfg;
+    const [taxa,setTaxa]=useState(ex?.taxaEntrada?String(ex.taxaEntrada):"");
+    const [prazo,setPrazo]=useState(ex?.prazoPagamento||"");
+    const [dist,setDist]=useState(ex?.distribuicao||[{pos:1,label:"1º Lugar",pct:70},{pos:2,label:"2º Lugar",pct:20},{pos:3,label:"3º Lugar",pct:10}]);
+    const total=dist.reduce((a,d)=>a+Number(d.pct||0),0);
+    const ok=total===100;
+    const [err,setErr]=useState("");
+    const save=async()=>{
+      if(!taxa||isNaN(+taxa)||+taxa<=0){setErr("Valor de entrada inválido.");return;}
+      if(!ok){setErr(`Soma deve ser 100% (atual: ${total}%).`);return;}
+      try{
+        await fbSetFinanceConfig(group.id,{taxaEntrada:+taxa,prazoPagamento:prazo,distribuicao:dist.map(d=>({pos:d.pos,label:d.label,pct:Number(d.pct)}))});
+        setShowCfg(false);showToast("Configuração salva!");
+      }catch(ex){setErr(ex.message);}
+    };
+    return e(Modal,{title:"💰 CONFIGURAR FINANCEIRO",onClose:()=>setShowCfg(false)},
+      e("label",{className:"cfg-label"},"Valor da taxa de entrada (R$)"),
+      e("input",{className:"cfg-input",type:"number",min:"1",step:"0.01",placeholder:"Ex: 20.00",value:taxa,onChange:ev=>setTaxa(ev.target.value)}),
+      e("label",{className:"cfg-label"},"Prazo para pagamento"),
+      e("input",{className:"cfg-input",type:"date",value:prazo,onChange:ev=>setPrazo(ev.target.value)}),
+      e("div",{style:{marginBottom:8,display:"flex",alignItems:"center",gap:6}},
+        e("label",{className:"cfg-label",style:{marginBottom:0}},"Distribuição do prêmio"),
+        e("span",{className:ok?"pct-ok":"pct-err"},(total+"% "+(ok?"✓":"(faltam "+(100-total)+"%)")))
+      ),
+      dist.map((d,i)=>e("div",{key:i,className:"dist-row"},
+        e("div",{className:`dist-pos ${POS_C[Math.min(i,4)]}`},POS_IC[Math.min(i,4)]),
+        e("span",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:14,width:60,flexShrink:0}},d.label),
+        e("input",{className:"dist-input",type:"number",min:0,max:100,value:d.pct,onChange:ev=>setDist(dd=>dd.map((x,idx)=>idx===i?{...x,pct:Number(ev.target.value)}:x)),style:{width:70}}),
+        e("span",{style:{fontSize:14,color:"#999"}},"%"),
+        dist.length>1&&e("button",{onClick:()=>setDist(dd=>dd.filter((_,idx)=>idx!==i)),style:{background:"none",border:"none",cursor:"pointer",color:"#c62828",fontSize:18,padding:"0 4px"}},"✕")
+      )),
+      dist.length<5&&e("button",{onClick:()=>setDist(dd=>[...dd,{pos:dd.length+1,label:`${dd.length+1}º Lugar`,pct:0}]),style:{fontSize:13,color:"var(--vd)",background:"none",border:"1px dashed var(--vd)",borderRadius:8,padding:"6px 14px",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,marginBottom:8}},"+  Adicionar colocação"),
+      err&&e("div",{className:"err-box"},err),
+      e("button",{className:"btn-p",onClick:save},"SALVAR CONFIGURAÇÃO")
+    );
+  }
+
+  function FundoView(){
+    const [confirming,setConfirming]=useState(false);
+    if(!cfg)return e("div",null,
+      e("div",{className:"empty",style:{margin:"14px 0"}},
+        e("div",{style:{fontSize:36,marginBottom:8}},"💰"),
+        e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:18,fontWeight:700,color:"#aaa"}},"SEM CONFIG. FINANCEIRA"),
+        e("p",null,isAdmin?"Configure a área financeira para ativar controle de pagamentos.":"O admin ainda não configurou o financeiro."),
+        isAdmin&&e("button",{className:"btn-p",style:{marginTop:14},onClick:()=>setShowCfg(true)},"CONFIGURAR AGORA")
+      )
+    );
+    return e("div",null,
+      prizeResult?.confirmed&&e("div",{style:{background:"linear-gradient(135deg,var(--am),#E6C800)",borderRadius:"var(--r)",padding:20,textAlign:"center",marginBottom:14}},
+        e("div",{style:{fontSize:36,marginBottom:8}},"🏆"),
+        e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,color:"var(--vde)",letterSpacing:1,marginBottom:12}},"TORNEIO ENCERRADO!"),
+        prizeResult.winners?.map((w,i)=>{const mem=group.members.find(m=>m.userId===w.userId),pr=premios[i];return mem&&pr?e("div",{key:i,style:{background:"rgba(255,255,255,.3)",borderRadius:10,padding:"10px 14px",marginBottom:6,display:"flex",alignItems:"center",justifyContent:"space-between"}},e("div",{style:{display:"flex",alignItems:"center",gap:8}},e("span",{style:{fontSize:20}},["🥇","🥈","🥉"][i]||""),e("span",{style:{fontWeight:700,color:"var(--vde)",fontSize:15}},mem.apelido)),e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"var(--vde)"}},fmtBRL(pr.valor))):null})
+      ),
+      e("div",{className:"fin-card"},
+        e("div",{className:"fin-card-title"},"💰 FUNDO TOTAL ARRECADADO"),
+        e("div",{style:{padding:"20px 0"}},
+          e("div",{className:"fundo-valor"},fmtBRL(fundo)),
+          e("div",{className:"fundo-label"},`${pagantes} DE ${group.members.length} PAGARAM · ${fmtBRL(cfg.taxaEntrada)} POR PESSOA`)
+        ),
+        e("div",{style:{display:"flex",gap:8}},
+          [{v:pagantes,l:"PAGOS",bg:"#e8f5e9",c:"#1b5e20"},{v:pendentes,l:"PENDENTES",bg:pendentes>0?"#ffebee":"#f5f5f5",c:pendentes>0?"#c62828":"#aaa"},{v:fmtBRL(cfg.taxaEntrada*group.members.length),l:"POTENCIAL",bg:"#e3f2fd",c:"#1565c0"}].map(({v,l,bg,c})=>
+            e("div",{key:l,style:{background:bg,borderRadius:8,padding:"8px 12px",textAlign:"center",flex:1}},
+              e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:typeof v==="string"?14:22,color:c,lineHeight:1}},v),
+              e("div",{style:{fontSize:10,color:"#999",fontWeight:700,marginTop:2}},l)
+            )
+          )
+        )
+      ),
+      e("div",{className:"fin-card"},
+        e("div",{className:"fin-card-title"},"🏆 DISTRIBUIÇÃO DE PRÊMIOS"),
+        premios.map((p,i)=>{
+          const winner=prizeResult?.winners?.[i],winMem=winner?group.members.find(m=>m.userId===winner.userId):ranked[i];
+          return e("div",{key:i,className:"premio-row"},
+            e("div",{className:`premio-pos ${POS_C[Math.min(i,4)]}`},POS_IC[Math.min(i,4)]),
+            e("div",{style:{flex:1}},
+              e("div",{style:{fontWeight:700,fontSize:15,color:"#222"}},winMem?winMem.apelido:(p.pos+"º lugar"),winMem&&e("span",{style:{fontSize:11,color:"#999",fontWeight:400}},` (${p.pos}º)`)),
+              e("div",{style:{display:"flex",alignItems:"center",gap:6,marginTop:2}},e("span",{className:"pct-badge"},`${p.pct}%`))
+            ),
+            e("div",{className:"premio-valor"},fmtBRL(p.valor))
+          );
+        }),
+        e("div",{style:{marginTop:12,paddingTop:12,borderTop:"1px solid #f0f0f0",display:"flex",justifyContent:"space-between",fontSize:13,color:"#999"}},
+          e("span",null,`${pagantes} × ${fmtBRL(cfg.taxaEntrada)}`),
+          e("span",{style:{fontWeight:700,color:"#1b5e20"}},fmtBRL(fundo)+" total")
+        )
+      ),
+      isAdmin&&!prizeResult?.confirmed&&Object.keys(results).length>0&&e("div",{className:"fin-card"},
+        e("div",{className:"fin-card-title"},"🛡️ CONFIRMAR VENCEDORES"),
+        !confirming?e("button",{className:"btn-p",onClick:()=>setConfirming(true)},"CONFIRMAR RESULTADO FINAL")
+        :e("div",null,
+          e("div",{className:"warn-box",style:{marginBottom:14}},"⚠️ Confirme apenas quando o torneio estiver encerrado."),
+          ranked.slice(0,premios.length).map((m,i)=>e("div",{key:m.userId,style:{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<premios.length-1?"1px solid #f5f5f5":"none"}},
+            e("span",{style:{fontSize:20}},["🥇","🥈","🥉","4️⃣"][Math.min(i,3)]),
+            e("span",{style:{fontWeight:700,flex:1}},m.apelido),
+            e("span",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,color:"#1b5e20"}},fmtBRL(premios[i]?.valor||0))
+          )),
+          e("div",{style:{display:"flex",gap:8,marginTop:14}},
+            e("button",{className:"btn-p",style:{background:"#1b5e20"},onClick:async()=>{await fbConfirmWinners(group.id,ranked.slice(0,premios.length).map(m=>({userId:m.userId})));setConfirming(false);showToast("🏆 Resultado confirmado!")}},"✓ CONFIRMAR"),
+            e("button",{className:"btn-sm-gray",onClick:()=>setConfirming(false)},"Cancelar")
+          )
+        )
+      ),
+      e("div",{className:"legal-footer"},
+        e("span",{style:{fontSize:20,flexShrink:0,marginTop:1}},"⚖️"),
+        e("span",null,e("strong",null,"Aviso Legal:")," Este bolão é de caráter recreativo entre amigos. A organização e o pagamento dos prêmios são de responsabilidade exclusiva dos participantes. Verifique a legislação local sobre bolões e apostas antes de utilizá-lo.")
+      )
+    );
+  }
+
+  function PagamentosView(){
+    if(!cfg)return e("div",{className:"empty",style:{margin:"14px 0"}},e("p",null,isAdmin?"Configure o financeiro primeiro.":"Admin ainda não configurou."));
+    return e("div",null,
+      cfg.prazoPagamento&&e("div",{style:{background:"#fff3e0",border:"1px solid #ffe082",borderRadius:10,padding:"10px 14px",display:"flex",alignItems:"center",gap:10,marginBottom:14}},
+        e("span",{style:{fontSize:20}},"⏰"),
+        e("div",null,e("div",{style:{fontWeight:700,fontSize:14,color:"#e65100"}},"Prazo"),e("div",{style:{fontSize:13,color:"#888"}},new Date(cfg.prazoPagamento+"T12:00:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"}))),
+        e("div",{style:{marginLeft:"auto",textAlign:"right"}},e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,color:"#1b5e20",lineHeight:1}},`${pagantes}/${group.members.length}`),e("div",{style:{fontSize:10,color:"#999",fontWeight:700}},"PAGARAM"))
+      ),
+      e("div",{style:{background:"#fff",borderRadius:"var(--r)",overflow:"hidden",border:"1.5px solid var(--cb)",marginBottom:14}},
+        group.members.map((m,i)=>{
+          const pag=payments[m.userId],isPago=pag?.pago||false,isMe=m.userId===user.uid;
+          return e("div",{key:m.userId},
+            e("div",{className:"pag-row",style:{borderBottom:i<group.members.length-1?"1px solid #f5f5f5":"none"}},
+              e("div",{className:`pag-av${isMe?" eu-av":isPago?" pago":" npago"}`},m.apelido[0].toUpperCase()),
+              e("div",{style:{flex:1}},
+                e("div",{style:{fontWeight:600,fontSize:15}},m.apelido,isMe&&e("span",{style:{fontSize:11,color:"#aaa",fontWeight:400}}," (você)"),m.isOwner&&e("span",{style:{fontSize:11,color:"var(--vde)",fontWeight:700,marginLeft:4}},"👑")),
+                pag?.obs&&e("div",{style:{fontSize:12,color:"#888"}},pag.obs),
+                pag?.paidAt&&isPago&&e("div",{style:{fontSize:11,color:"#999"}},`Pago em ${new Date(pag.paidAt).toLocaleDateString("pt-BR")}`)
+              ),
+              e("span",{className:isPago?"pago-tag":"npago-tag"},isPago?"✓ Pago":"⏳ Pendente"),
+              isAdmin&&e("button",{className:`toggle-pag ${isPago?"toggle-on":"toggle-off"}`,onClick:async()=>{await fbSetPayment(group.id,m.userId,!isPago,pag?.obs||"");showToast(!isPago?"✓ Marcado como pago":"Marcado como não pago")}})
+            ),
+            isAdmin&&e("div",{style:{padding:"0 14px 10px",display:"flex",gap:6}},
+              e("input",{className:"obs-input",type:"text",placeholder:"Observação (ex: pagou via Pix)",maxLength:60,defaultValue:pag?.obs||"",onBlur:async ev=>{await fbSetPayment(group.id,m.userId,isPago,ev.target.value);}}),
+              e("button",{className:"btn-sm",onClick:async ev=>{const input=ev.target.previousSibling;await fbSetPayment(group.id,m.userId,isPago,input.value);showToast("Salvo");}},"OK")
+            )
+          );
+        })
+      ),
+      pendentes>0&&e("div",{className:"warn-box",style:{marginBottom:14}},`⚠️ ${pendentes} participante${pendentes>1?"s":""} ainda não pagou${pendentes>1?"ram":""}.`),
+      e("div",{className:"legal-footer"},e("span",{style:{fontSize:20,flexShrink:0}},"⚖️"),e("span",null,e("strong",null,"Aviso Legal:")," Este bolão é de caráter recreativo entre amigos. Verifique a legislação local sobre bolões e apostas antes de utilizá-lo."))
+    );
+  }
+
+  return e("div",{style:{flex:1,overflowY:"auto",paddingBottom:80}},
+    e("div",{className:"fin-hero"},
+      e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:24,color:"var(--am)",letterSpacing:1}},"💰 ÁREA FINANCEIRA"),
+      e("div",{style:{fontSize:12,color:"rgba(255,255,255,.7)",marginTop:2}},group.nome),
+      cfg&&e("div",{style:{display:"flex",gap:10,marginTop:10,alignItems:"center",flexWrap:"wrap"}},
+        e("span",{style:{background:"rgba(255,255,255,.15)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,fontFamily:"'Barlow Condensed',sans-serif"}},`Taxa: ${fmtBRL(cfg.taxaEntrada)}`),
+        e("span",{style:{background:"rgba(255,255,255,.15)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,fontFamily:"'Barlow Condensed',sans-serif"}},`Fundo: ${fmtBRL(fundo)}`),
+        isAdmin&&e("button",{onClick:()=>setShowCfg(true),style:{background:"rgba(255,255,255,.15)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,letterSpacing:1}},"✏️ EDITAR")
+      ),
+      e("div",{className:"fin-tabs",style:{marginTop:14}},
+        [["fundo","🏆 Fundo"],["pagamentos",isAdmin?"💳 Pagamentos":"👁️ Status"]].map(([k,l])=>
+          e("button",{key:k,className:`fin-tab${tab===k?" on":""}`,onClick:()=>setTab(k)},l)
+        )
+      )
+    ),
+    e("div",{style:{padding:"14px"}},
+      tab==="fundo"&&e(FundoView),
+      tab==="pagamentos"&&e(PagamentosView)
+    ),
+    showCfg&&e(FinCfgModal),
+    toast&&e(Toast,{msg:toast})
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// GROUP VIEW  — tabbed shell with real-time Firebase listeners
+// ════════════════════════════════════════════════════════════════════════════
+function GroupView({groupId,user,onBack}){
+  const group    = useGroup(groupId);
+  const palpites = useGroupPalpites(groupId);
+  const results  = useGroupResults(groupId);
+  const especiais= useGroupEspeciais(groupId);
+  const gabarito = useGabarito(groupId);
+  const [tab,setTab]       = useState("jogos");
+  const [perfilId,setPerfilId] = useState(null);
+  const syncRef = useRef(null);
+  const e = React.createElement;
+
+  // Auto-sync football-data.org every 5 min
+  useEffect(()=>{
+    if(!group) return;
+    const isAdmin=group.ownerId===user.uid;
+    if(!isAdmin) return;
+    const doSync=async()=>{
+      const key=localStorage.getItem("bce_api_key")||"";
+      if(!key) return;
+      try{
+        const r=await fetch("https://api.football-data.org/v4/competitions/WC/matches?season=2026&status=FINISHED",{headers:{"X-Auth-Token":key}});
+        if(!r.ok) return;
+        const data=await r.json();
+        const FD_MAP={"Mexico":"México","United States":"EUA","Uruguay":"Uruguai","Algeria":"Argélia","Brazil":"Brasil","Japan":"Japão","Spain":"Espanha","Morocco":"Marrocos","France":"França","Germany":"Alemanha","Australia":"Austrália","Saudi Arabia":"Arábia Saudita","England":"Inglaterra","Portugal":"Portugal","Iran":"Irã","Ecuador":"Equador","Argentina":"Argentina","Netherlands":"Holanda","Senegal":"Senegal","Poland":"Polônia","Italy":"Itália","Croatia":"Croácia","Canada":"Canadá","Peru":"Peru","Belgium":"Bélgica","Turkey":"Turquia","Chile":"Chile","Ukraine":"Ucrânia","Korea Republic":"Coreia do Sul","Colombia":"Colômbia","Costa Rica":"Costa Rica","South Africa":"África do Sul","Switzerland":"Suíça","Denmark":"Dinamarca","New Zealand":"Nova Zelândia","Togo":"Togo","Serbia":"Sérvia","Egypt":"Egito","Venezuela":"Venezuela","Ivory Coast":"Costa do Marfim","Cameroon":"Camarões","Romania":"Romênia","Guatemala":"Guatemala","Qatar":"Qatar","Nigeria":"Nigéria","Russia":"Rússia","Bolivia":"Bolívia","Albania":"Albânia"};
+        for(const m of(data.matches||[])){
+          if(m.status!=="FINISHED") continue;
+          const h=FD_MAP[m.homeTeam?.name]||"",a=FD_MAP[m.awayTeam?.name]||"",ft=m.score?.fullTime;
+          if(!ft||ft.home==null) continue;
+          const j=TODOS_JOGOS.find(j=>(j.casa===h&&j.fora===a)||(j.casa===a&&j.fora===h));
+          if(!j) continue;
+          const sw=j.casa===a;
+          await fbSetResult(groupId,j.id,sw?ft.away:ft.home,sw?ft.home:ft.away,"final");
+        }
+      }catch{}
+    };
+    doSync();
+    syncRef.current=setInterval(doSync,5*60*1000);
+    return()=>clearInterval(syncRef.current);
+  },[group?.ownerId]);
+
+  if(!group) return e("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",flex:1,padding:40}},
+    e("div",{style:{textAlign:"center"}},
+      e("div",{className:"splash-spin",style:{margin:"0 auto 16px",borderTopColor:"var(--vd)"}}),
+      e("div",{style:{color:"#999",fontSize:14}},"Carregando bolão...")
+    )
+  );
+
+  const isAdmin=group.ownerId===user.uid;
+
+  if(perfilId) return e("div",{style:{display:"flex",flexDirection:"column",flex:1}},
+    e(PerfilScreen,{memberId:perfilId,group,currentUserId:user.uid,palpites,results,especiais,gabarito,onBack:()=>setPerfilId(null)})
+  );
+
+  const TABS=[
+    {k:"jogos",l:"⚽ Jogos"},
+    {k:"aovivo",l:"🔴 Ao Vivo"},
+    {k:"especiais",l:"⭐ Especiais"},
+    {k:"ranking",l:"🏆 Ranking"},
+  ];
+  if(group.financeConfig) TABS.push({k:"financeiro",l:"💰 Financeiro"});
+  if(isAdmin) TABS.push({k:"admin",l:"🛡️ Admin"});
+
+  return e("div",{style:{display:"flex",flexDirection:"column",flex:1}},
+    e("div",{className:"hd"},
+      e("div",{className:"logo"},
+        e("span",null,"⚽"),
+        e("div",null,
+          e("div",{style:{fontSize:18}},"BOLÃO"),
+          e("span",{className:"logo-sub"},"COPA 2026")
+        )
+      ),
+      e("div",{className:"av-sm"},user.displayName?.[0]?.toUpperCase()||"?")
+    ),
+    e("div",{style:{background:"var(--vd)",padding:"0 14px",flexShrink:0}},
+      e("button",{className:"back-btn",onClick:onBack},
+        e("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2.5"},e("path",{d:"M19 12H5M12 5l-7 7 7 7"})),
+        " Meus bolões"
+      ),
+      e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"#fff",letterSpacing:1,padding:"4px 0 10px",display:"flex",alignItems:"center",gap:8}},
+        group.nome,
+        isAdmin&&e("span",{style:{background:"var(--am)",color:"var(--vde)",fontFamily:"'Barlow Condensed',sans-serif",fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,letterSpacing:1}},"ADM")
+      ),
+      e("div",{className:"gn-bar"},
+        TABS.map(t=>e("button",{key:t.k,className:`gn-btn${tab===t.k?" on":""}`,onClick:()=>setTab(t.k)},t.l))
+      )
+    ),
+    tab==="jogos"      && e(JogosScreen,{user,group,palpites,results}),
+    tab==="aovivo"     && e(AoVivoScreen,{user,group,palpites,results}),
+    tab==="especiais"  && e(EspeciaisScreen,{user,group,especiais,gabarito}),
+    tab==="ranking"    && e(RankingScreen,{user,group,palpites,results,especiais,gabarito,onOpenPerfil:setPerfilId}),
+    tab==="financeiro" && e(FinanceScreen,{user,group,palpites,results,especiais,gabarito}),
+    tab==="admin" && isAdmin && e(AdminPanel,{user,group,results,gabarito})
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════════════════════════════════════
+function Dashboard({user}){
+  const {groups,loading} = useUserGroups(user.uid);
+  const [modal,setModal]   = useState(null);
+  const [selGroup,setSelGroup] = useState(null);
+  const [toast,setToast]   = useState(null);
+  const showToast = m=>{setToast(m);setTimeout(()=>setToast(null),2200)};
+  const copyCode = (code,ev)=>{ev?.stopPropagation();navigator.clipboard?.writeText(code).catch(()=>{});showToast("Código copiado!");};
+  const e = React.createElement;
+
+  if(selGroup) return e(GroupView,{groupId:selGroup,user,onBack:()=>setSelGroup(null)});
+
+  return e("div",{style:{display:"flex",flexDirection:"column",flex:1}},
+    e(Header,{user,onLogout:fbLogout}),
+    e("div",{className:"pg"},
+      // Greeting
+      e("div",{className:"gb"},
+        e("div",{className:"av-lg"},user.displayName?.[0]?.toUpperCase()||"?"),
+        e("div",{className:"gt"},
+          e("h2",null,`Olá, ${user.displayName}! 👋`),
+          e("p",null,groups.length===0?"Crie ou entre em um bolão":`${groups.length} bolão${groups.length>1?"ões":""}`)
+        )
+      ),
+      e(CopaBanner),
+      // Copa info
+      e("div",{style:{background:"var(--az)",borderRadius:"var(--rs)",padding:"12px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:12}},
+        e("span",{style:{fontSize:28}},"🏆"),
+        e("div",null,
+          e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:16,color:"var(--am)",letterSpacing:1}},"COPA DO MUNDO 2026"),
+          e("div",{style:{fontSize:11,color:"rgba(255,255,255,.65)",lineHeight:1.6}},
+            "EUA · México · Canadá · 12 jun–19 jul 2026",e("br"),
+            `${JOGOS_FG.length} jogos grupos · ${JOGOS_MM.length} mata-mata`
+          )
+        )
+      ),
+      // Quick actions
+      e("div",{className:"sec"},"AÇÕES RÁPIDAS"),
+      e("div",{className:"ag-grid"},
+        e("div",{className:"ag-card",onClick:()=>setModal("create")},
+          e("div",{className:"icon"},"➕"),e("div",{className:"lbl"},"Criar Bolão"),e("div",{className:"sub"},"Convide amigos")
+        ),
+        e("div",{className:"ag-card",onClick:()=>setModal("join")},
+          e("div",{className:"icon"},"🔑"),e("div",{className:"lbl"},"Entrar"),e("div",{className:"sub"},"Com código")
+        )
+      ),
+      // Groups list
+      e("div",{className:"sec"},"MEUS BOLÕES"),
+      loading?e("div",{style:{textAlign:"center",padding:24}},e("div",{className:"splash-spin",style:{margin:"0 auto",borderTopColor:"var(--vd)"}}))
+      :groups.length===0?e("div",{className:"empty"},
+        e("div",{style:{fontSize:36,marginBottom:8}},"⚽"),
+        e("div",{style:{fontFamily:"'Barlow Condensed',sans-serif",fontSize:18,fontWeight:700,color:"#aaa"}},"NENHUM BOLÃO AINDA"),
+        e("p",null,"Crie ou entre em um bolão para começar!")
+      ):e("div",{className:"gl"},
+        groups.map(g=>{
+          const isOwner=g.ownerId===user.uid;
+          const hasFin=!!g.financeConfig;
+          return e("div",{key:g.id,className:"gc",onClick:()=>setSelGroup(g.id)},
+            e("div",{className:"gc-h"},
+              e("div",{className:"gc-n"},g.nome),
+              e("span",{className:isOwner?"badge-adm":"badge-m"},isOwner?"ADM":"MEMBRO")
+            ),
+            e("div",{style:{display:"flex",gap:8,marginBottom:10}},
+              e("div",{style:{background:"#f0f9f4",borderRadius:8,padding:"6px 12px",textAlign:"center",flex:1}},
+                e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:"var(--vd)",lineHeight:1}},g.members?.length||0),
+                e("div",{style:{fontSize:10,color:"#999",fontWeight:700}},"MEMBROS")
+              ),
+              hasFin&&e("div",{style:{background:"#e8f5e9",borderRadius:8,padding:"6px 12px",textAlign:"center",flex:1}},
+                e("div",{style:{fontFamily:"'Bebas Neue',sans-serif",fontSize:14,color:"#1b5e20",lineHeight:1}},fmtBRL(g.financeConfig.taxaEntrada||0)),
+                e("div",{style:{fontSize:10,color:"#999",fontWeight:700}},"TAXA")
+              ),
+              e("div",{style:{background:"#f5f5f5",borderRadius:8,padding:"6px 12px",textAlign:"center",flex:1}},
+                e("div",{style:{fontSize:16,lineHeight:1}},isOwner?"👑":"👤"),
+                e("div",{style:{fontSize:10,color:"#999",fontWeight:700}},isOwner?"CRIADOR":"MEMBRO")
+              )
+            ),
+            e("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between"}},
+              e("span",{style:{fontSize:12,color:"#888"}},"Toque para entrar →"),
+              e("div",{className:"cp",onClick:ev=>copyCode(g.code,ev)},
+                g.code,
+                e("svg",{viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,style:{width:12,height:12}},
+                  e("rect",{x:9,y:9,width:13,height:13,rx:2}),
+                  e("path",{d:"M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"})
+                )
+              )
+            )
+          );
+        })
+      )
+    ),
+    modal==="create"&&e(CreateGroupModal,{user,onClose:()=>setModal(null),onDone:()=>{setModal(null);showToast("🎉 Bolão criado!");}}),
+    modal==="join"  &&e(JoinGroupModal, {user,onClose:()=>setModal(null),onDone:()=>{setModal(null);showToast("Entrou no bolão!");}}),
+    toast&&e(Toast,{msg:toast})
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// ROOT APP
+// ════════════════════════════════════════════════════════════════════════════
+function App(){
+  const [user,setUser] = useState(undefined); // undefined = loading
+  const e = React.createElement;
+
+  useEffect(()=>{
+    const unsub = onAuthStateChanged(auth, u=>{
+      setUser(u||null);
+      // Hide splash after auth resolves
+      setTimeout(()=>{
+        const splash=document.getElementById("splash");
+        if(splash){splash.classList.add("hide");setTimeout(()=>splash.remove(),500);}
+      },300);
+    });
+    return unsub;
+  },[]);
+
+  if(user===undefined) return null; // Splash is showing
+
+  return e("div",{id:"app-inner",style:{display:"flex",flexDirection:"column",flex:1}},
+    user ? e(Dashboard,{user}) : e(AuthScreen,{onLogin:setUser})
+  );
+}
+
+
+// ── Service Worker Registration ──────────────────────────────────────────
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").then(reg => {
+      console.log("SW registered:", reg.scope);
+    }).catch(err => {
+      console.log("SW registration failed:", err);
+    });
+  });
+}
+
+// ── PWA Install Prompt ────────────────────────────────────────────────────
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", ev => {
+  ev.preventDefault();
+  deferredPrompt = ev;
+  // Show install button
+  const btn = document.getElementById("install-btn");
+  if (btn) btn.style.display = "flex";
+});
+window.addEventListener("appinstalled", () => {
+  const btn = document.getElementById("install-btn");
+  if (btn) btn.remove();
+  deferredPrompt = null;
+});
+window.handleInstall = function() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+};
+
+// Mount
+const root = createRoot(document.getElementById("root"));
+root.render(React.createElement(App));
+
+</script>
+</body>
+</html>
